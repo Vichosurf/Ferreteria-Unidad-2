@@ -31,17 +31,15 @@
 
 ## Parte 2: Explicación del proceso
 
-Preparé el proyecto Django para trabajar con la variante de ferretería.
-Definí un producto con nombre, categoría, precio y stock.
-Configuré SQLite y generé la migración inicial del modelo.
-Registré el modelo en Django Admin para administrar el catálogo.
-Configuré columnas visibles, búsqueda y filtro por categoría.
-Preparé una fixture con 40 productos de ejemplo para poblar la base de datos.
-Revisé que los precios y las cantidades respetaran los rangos del modelo.
-Cargué la fixture con el comando de Django y verifiqué los registros.
-Conecté la página principal con una consulta al ORM.
-Organicé los productos en tarjetas con su categoría, precio y stock.
-Probé la carga y la página principal usando una base SQLite temporal.
-También recuperé las funciones de cuenta, consultas, compras de demostración,
-historial, notificaciones y preferencias, y comprobé la suite de pruebas.
-Finalmente documenté los comandos para instalar, iniciar y revisar el proyecto.
+Primero preparé el proyecto Django para el catálogo de una ferretería.
+Definí el producto con nombre, categoría, precio y stock, y comprobé sus migraciones.
+Configuré SQLite en los ajustes del proyecto para guardar los productos.
+Registré el modelo en Django Admin para poder gestionar el catálogo.
+Dejé visibles el nombre, la categoría, el precio y el stock de cada producto.
+También configuré la búsqueda y el filtro por categoría para encontrar productos.
+Preparé una fixture con 40 productos de ferretería en el formato que acepta Django.
+Revisé los campos, los precios y las cantidades antes de cargar los registros.
+Ajusté el precio del perno hexagonal para respetar el mínimo definido para los productos.
+Cargué la fixture con `loaddata` y comprobé que los productos aparecieran en la base de datos.
+Configuré el idioma del proyecto en español de Chile y la zona horaria de Santiago.
+Finalmente probé el administrador, la carga de datos y la consulta del catálogo desde la aplicación.
