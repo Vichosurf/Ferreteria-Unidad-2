@@ -1,0 +1,76 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Catálogo | Ferretería{% endblock %}
+
+{% block content %}
+<section class="catalogo-hero">
+    <div>
+        <h2>{% if user.is_authenticated %}Encuentra lo que necesitas{% else %}Explora el catálogo{% endif %}</h2>
+        <p>{% if user.is_authenticated %}Elige tus productos y registra una compra de demostración.{% else %}Revisa los productos sin crear una cuenta. Inicia sesión cuando quieras comprar.{% endif %}</p>
+    </div>
+    {% if user.is_authenticated %}
+    <a class="boton boton-principal" href="{% url 'consulta' %}">Pedir asesoría</a>
+    {% else %}
+    <a class="boton boton-principal" href="{% url 'iniciar_sesion' %}?next={% url 'catalogo' %}">Iniciar sesión para comprar</a>
+    {% endif %}
+</section>
+
+<section class="resumen-tarjetas" aria-label="Resumen del catálogo">
+    <article class="tarjeta-resumen"><strong>{{ resumen.total }}</strong><span>productos en catálogo</span></article>
+    <article class="tarjeta-resumen"><strong>{{ resumen.con_stock }}</strong><span>productos disponibles</span></article>
+    <article class="tarjeta-resumen"><strong>{{ resumen.unidades|default:0 }}</strong><span>unidades en inventario</span></article>
+</section>
+
+<form class="filtros" method="get" action="{% url 'catalogo' %}">
+    <label for="busqueda">Buscar producto
+        <input id="busqueda" type="search" name="q" value="{{ busqueda }}" placeholder="Ej.: taladro, pintura">
+    </label>
+    <label for="categoria">Categoría
+        <select id="categoria" name="categoria">
+            <option value="">Todas las categorías</option>
+            {% for valor, etiqueta in categorias %}
+            <option value="{{ valor }}"{% if categoria_seleccionada == valor %} selected{% endif %}>{{ etiqueta }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <button class="boton boton-principal" type="submit">Buscar</button>
+    <a class="boton" href="{% url 'catalogo' %}">Limpiar</a>
+</form>
+
+<p class="resumen">Mostrando {{ productos|length }} de {{ resumen.total }} productos.</p>
+<div class="productos-grid">
+    {% for producto in productos %}
+    <article class="producto-card{% if producto.stock == 0 %} producto-card-agotado{% endif %}" id="producto-{{ producto.id }}">
+        <a class="producto-imagen-enlace" href="{% url 'detalle_producto' producto.id %}" aria-label="Ver {{ producto.nombre }}">
+            {% include 'catalogo/partials/imagen_producto.html' with producto=producto %}
+            {% if producto.stock == 0 %}<span class="etiqueta-agotado">Agotado</span>{% endif %}
+        </a>
+        <div class="producto-card-contenido">
+            <p class="producto-categoria">{{ producto.get_categoria_display }}</p>
+            <h3><a href="{% url 'detalle_producto' producto.id %}">{{ producto.nombre }}</a></h3>
+            <p class="producto-precio">${{ producto.precio }} <span>CLP</span></p>
+            <p class="producto-stock{% if producto.stock == 0 %} sin-unidades{% endif %}">
+                {% if producto.stock > 0 %}{{ producto.stock }} disponibles{% else %}Sin stock{% endif %}
+            </p>
+            {% if user.is_authenticated %}
+                {% if producto.stock > 0 %}
+                <form class="form-compra tarjeta-form-compra" method="post" action="{% url 'comprar_producto' producto.id %}">
+                    {% csrf_token %}
+                    <label for="cantidad-{{ producto.id }}">Cantidad</label>
+                    <input id="cantidad-{{ producto.id }}" type="number" name="cantidad" value="1" min="1" max="{{ producto.stock }}" required>
+                    <button class="boton boton-compra" type="submit">Comprar</button>
+                </form>
+                {% else %}
+                <button class="boton boton-deshabilitado" type="button" disabled>Sin stock</button>
+                {% endif %}
+                <a class="enlace-consulta-producto" href="{% url 'consulta' %}?producto={{ producto.id }}">Consultar producto</a>
+            {% else %}
+            <a class="boton boton-compra" href="{% url 'iniciar_sesion' %}?next={% url 'catalogo' %}%23producto-{{ producto.id }}">Iniciar sesión para comprar</a>
+            {% endif %}
+        </div>
+    </article>
+    {% empty %}
+    <p class="productos-vacios">No encontramos productos con esos filtros.</p>
+    {% endfor %}
+</div>
+{% endblock %}

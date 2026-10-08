@@ -1,0 +1,25 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Historial | Ferretería{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <h2>Mi historial</h2>
+    <section class="seccion-historial">
+        <h3>Compras de demostración</h3>
+        {% for compra in compras %}
+            <p>{{ compra.nombre_producto }} · {{ compra.cantidad }} unidad(es) · ${{ compra.total }} · {{ compra.creada_en|date:"d/m/Y H:i" }}</p>
+        {% empty %}
+            <p>Aún no tienes compras registradas.</p>
+        {% endfor %}
+    </section>
+    <section class="seccion-historial">
+        <h3>Consultas enviadas</h3>
+        {% for consulta in consultas %}
+            <p>{{ consulta.producto|default:"Consulta general" }} · {{ consulta.creada_en|date:"d/m/Y H:i" }}<br>{{ consulta.mensaje }}</p>
+        {% empty %}
+            <p>Aún no has enviado consultas.</p>
+        {% endfor %}
+    </section>
+</section>
+{% endblock %}

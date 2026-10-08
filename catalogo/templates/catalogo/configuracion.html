@@ -1,0 +1,35 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Configuración | Ferretería{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <h2>Configuración</h2>
+    <p>Elige el aspecto y el idioma de esta página. Se guardarán en esta sesión.</p>
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            <label for="idioma">Idioma / Language</label>
+            <select id="idioma" name="idioma">
+                <option value="es"{% if idioma == 'es' %} selected{% endif %}>Español</option>
+                <option value="en"{% if idioma == 'en' %} selected{% endif %}>English</option>
+            </select>
+        </p>
+        <p>
+            <label for="tema">Brillo / Theme</label>
+            <select id="tema" name="tema">
+                <option value="light"{% if tema == 'light' %} selected{% endif %}>Claro / Light</option>
+                <option value="dark"{% if tema == 'dark' %} selected{% endif %}>Oscuro / Dark</option>
+            </select>
+        </p>
+        <p>
+            <label>
+                <input type="checkbox" name="notificaciones" style="width:auto"
+                    {% if notificaciones_activas %}checked{% endif %}>
+                Recibir notificaciones en esta aplicación
+            </label>
+        </p>
+        <button type="submit">Guardar configuración</button>
+    </form>
+</section>
+{% endblock %}

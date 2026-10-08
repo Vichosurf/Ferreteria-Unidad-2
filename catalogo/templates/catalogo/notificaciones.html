@@ -1,0 +1,22 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Notificaciones | Ferretería{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <h2>Notificaciones</h2>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Marcar todas como leídas</button>
+    </form>
+    <ul>
+        {% for aviso in avisos %}
+            <li{% if not aviso.leido %} class="estado-no-leido"{% endif %}>
+                {{ aviso.mensaje }} · {{ aviso.creado_en|date:"d/m/Y H:i" }}
+            </li>
+        {% empty %}
+            <li>No tienes notificaciones todavía.</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

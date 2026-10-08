@@ -1,124 +1,36 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Catálogo de ferretería</title>
-    <style>
-        :root {
-            color-scheme: light;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f6f8;
-            color: #202a35;
-        }
+{% extends 'catalogo/base.html' %}
 
-        * { box-sizing: border-box; }
+{% block title %}Inicio | Ferretería{% endblock %}
 
-        body { margin: 0; }
-
-        header {
-            background: #182b3e;
-            color: #fff;
-            padding: 2.5rem max(1.25rem, calc((100% - 1120px) / 2));
-            border-bottom: 5px solid #f28c28;
-        }
-
-        header h1 { margin: 0; font-size: clamp(1.8rem, 4vw, 2.6rem); }
-        header p { margin: .65rem 0 0; color: #d6e0e9; }
-
-        main {
-            width: min(1120px, calc(100% - 2rem));
-            margin: 2rem auto 4rem;
-        }
-
-        .resumen {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .resumen h2 { margin: 0; font-size: 1.3rem; }
-        .contador { color: #526170; font-size: .95rem; }
-
-        .productos {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.15rem;
-        }
-
-        .tarjeta {
-            overflow: hidden;
-            background: #fff;
-            border: 1px solid #e1e6eb;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgb(24 43 62 / 7%);
-        }
-
-        .producto-imagen {
-            min-height: 150px;
-            display: grid;
-            place-items: center;
-            background: linear-gradient(135deg, #e9f0f5, #f7f8fa);
-            font-size: 4rem;
-        }
-
-        .producto-info { padding: 1rem; }
-        .categoria { color: #526170; font-size: .78rem; font-weight: 700; }
-        .producto-info h3 { min-height: 2.7rem; margin: .5rem 0; font-size: 1.08rem; }
-        .precio { margin: .75rem 0; color: #182b3e; font-size: 1.35rem; font-weight: 700; }
-        .stock { margin: 0; color: #526170; font-size: .9rem; }
-
-        .vacio {
-            padding: 2rem;
-            background: #fff;
-            border: 1px solid #e1e6eb;
-            border-radius: 12px;
-            color: #526170;
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Catálogo de ferretería</h1>
-        <p>Herramientas y materiales disponibles en nuestro catálogo.</p>
-    </header>
-
-    <main>
-        <section aria-labelledby="titulo-productos">
-            <div class="resumen">
-                <h2 id="titulo-productos">Productos disponibles</h2>
-                <span class="contador">{{ productos|length }} productos</span>
-            </div>
-
-            {% if productos %}
-                <div class="productos">
-                    {% for producto in productos %}
-                        <article class="tarjeta">
-                            <div class="producto-imagen" role="img" aria-label="{{ producto.categoria }}">
-                                {{ producto.icono }}
-                            </div>
-                            <div class="producto-info">
-                                <span class="categoria">{{ producto.categoria }}</span>
-                                <h3>{{ producto.nombre }}</h3>
-                                <p class="precio">${{ producto.precio }} CLP</p>
-                                <p class="stock">
-                                    {% if producto.stock %}
-                                        Stock: {{ producto.stock }} unidades
-                                    {% else %}
-                                        Sin stock
-                                    {% endif %}
-                                </p>
-                            </div>
-                        </article>
-                    {% endfor %}
-                </div>
+{% block content %}
+<section class="catalogo-hero">
+    <div>
+        <h2>¿Qué necesitas hacer hoy?</h2>
+        <p>Elige una opción para continuar en nuestra ferretería.</p>
+    </div>
+</section>
+<section class="opciones-inicio" aria-label="Opciones principales">
+    <a class="opcion-inicio" href="{% url 'consulta' %}">
+        <span class="opcion-numero">1</span>
+        <span>
+            <strong>Enviar una consulta</strong>
+            <span>Pregúntanos por un producto o solicita asesoría.</span>
+        </span>
+        <span aria-hidden="true">→</span>
+    </a>
+    <a class="opcion-inicio" href="{% url 'catalogo' %}">
+        <span class="opcion-numero">2</span>
+        <span>
+            {% if user.is_authenticated %}
+            <strong>Comprar productos</strong>
+            <span>Revisa el catálogo y registra una compra de demostración.</span>
             {% else %}
-                <p class="vacio">Aún no hay productos registrados en el catálogo.</p>
+            <strong>Continuar como invitado</strong>
+            <span>Explora el catálogo sin crear una cuenta; inicia sesión para comprar.</span>
             {% endif %}
-        </section>
-    </main>
-</body>
-</html>
+        </span>
+        <span aria-hidden="true">→</span>
+    </a>
+</section>
+<p class="nota-demo">Las compras registradas son demostrativas: no se realizan pagos reales.</p>
+{% endblock %}

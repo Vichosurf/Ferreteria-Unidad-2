@@ -1,0 +1,39 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}{{ producto.nombre }} | Ferretería{% endblock %}
+
+{% block content %}
+<p><a href="{% url 'catalogo' %}">← Volver al catálogo</a></p>
+<section class="producto-detalle">
+    <div class="producto-detalle-imagen">
+        {% include 'catalogo/partials/imagen_producto.html' with producto=producto %}
+    </div>
+    <div class="producto-detalle-contenido">
+        <p class="producto-categoria">{{ producto.get_categoria_display }}</p>
+        <h2>{{ producto.nombre }}</h2>
+        <p class="producto-precio">${{ producto.precio }} <span>CLP</span></p>
+        <p>
+            {% if producto.stock > 0 %}
+            <span class="estado">Disponible · {{ producto.stock }} unidades</span>
+            {% else %}
+            <span class="estado estado-agotado">Agotado temporalmente</span>
+            {% endif %}
+        </p>
+        {% if user.is_authenticated %}
+        <a class="boton boton-principal" href="{% url 'consulta' %}?producto={{ producto.id }}">Consultar por este producto</a>
+            {% if producto.stock > 0 %}
+        <form class="form-compra" method="post" action="{% url 'comprar_producto' producto.id %}">
+            {% csrf_token %}
+            <label for="cantidad-detalle">Cantidad</label>
+            <input id="cantidad-detalle" type="number" name="cantidad" value="1" min="1" max="{{ producto.stock }}" required>
+            <button class="boton boton-compra" type="submit">Comprar (demostración)</button>
+        </form>
+            {% endif %}
+        {% else %}
+        <p>Estás navegando como invitado. Puedes explorar el catálogo y, para comprar, iniciar sesión.</p>
+        <a class="boton boton-compra" href="{% url 'iniciar_sesion' %}?next={% url 'detalle_producto' producto.id %}">Iniciar sesión para comprar</a>
+        {% endif %}
+        <p class="nota-demo">La compra es demostrativa; no se realiza ningún cobro.</p>
+    </div>
+</section>
+{% endblock %}

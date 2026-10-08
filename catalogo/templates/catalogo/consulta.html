@@ -1,0 +1,15 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Enviar consulta | Ferretería{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <h2>Consulta de productos</h2>
+    <p>Cuéntanos qué necesitas y el equipo de la ferretería podrá responderte.</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar consulta</button>
+    </form>
+</section>
+{% endblock %}

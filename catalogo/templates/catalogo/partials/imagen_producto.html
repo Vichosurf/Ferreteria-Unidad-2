@@ -1,0 +1,4 @@
+{% load static %}
+<svg class="producto-imagen" role="img" aria-label="Ilustración de {{ producto.get_categoria_display }}">
+    <use href="{% static 'catalogo/images/productos.svg' %}#{% if producto.categoria == 'Herramientas manuales' %}manuales{% elif producto.categoria == 'Herramientas eléctricas' %}electricas{% elif producto.categoria == 'Fijaciones' %}fijaciones{% elif producto.categoria == 'Pinturas' %}pinturas{% elif producto.categoria == 'Electricidad' %}electricidad{% elif producto.categoria == 'Seguridad' %}seguridad{% elif producto.categoria == 'Construcción' %}construccion{% else %}jardin{% endif %}"></use>
+</svg>

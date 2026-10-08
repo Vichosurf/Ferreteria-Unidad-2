@@ -34,6 +34,12 @@ Usé un asistente de IA como apoyo puntual durante el desarrollo. Revisé el có
 - **Resumen de la respuesta:** Se prepararon esta guía de instalación y el registro de uso para acompañar el repositorio.
 - **Ajustes y comprobación:** La documentación describe solo lo que está presente en el código de esta entrega. No se añadieron credenciales al repositorio; cada usuario crea su propio superusuario con Django.
 
+### 6. Recuperación de funciones adicionales
+
+- **Solicitud:** “No te olvides de los otros que sacaste, no pongas los commits pero agrégalos de nuevo como era antes, no modifiques ningún commit ni lo anterior, solo ponlo como extra.”
+- **Resumen:** Se recuperaron del historial local de Git las páginas y funciones que no estaban en la versión organizada por etapas.
+- **Ajustes y comprobación:** Se volvieron a incluir el registro e inicio de sesión, las consultas, el catálogo y detalle de productos, las compras de demostración, el historial, las notificaciones, las preferencias y sus migraciones. Se conservaron los 40 productos de la fixture principal. Las pruebas de la aplicación, las comprobaciones de Django y el estado de migraciones se ejecutaron correctamente.
+
 ## Parte 2: Explicación del proceso
 
 Preparé el proyecto Django para trabajar con la variante de ferretería.
@@ -47,4 +53,6 @@ Cargué la fixture con el comando de Django y verifiqué los registros.
 Conecté la página principal con una consulta al ORM.
 Organicé los productos en tarjetas con su categoría, precio y stock.
 Probé la carga y la página principal usando una base SQLite temporal.
+También recuperé las funciones de cuenta, consultas, compras de demostración,
+historial, notificaciones y preferencias, y comprobé la suite de pruebas.
 Finalmente documenté los comandos para instalar, iniciar y revisar el proyecto.

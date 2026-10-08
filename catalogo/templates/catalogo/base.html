@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="{% if idioma_actual == 'en' %}en{% else %}es{% endif %}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Ferretería{% endblock %}</title>
+    <style>
+        :root { font-family: system-ui, sans-serif; color: #202a35; background: {{ configuracion.color_fondo|default:'#f3f5f7' }}; }
+        body { margin: 0; min-height: 100vh; }
+        header { padding: 1.1rem max(1.25rem, calc((100% - 1160px) / 2)); background: #183b56; color: white; }
+        header h1 { margin: 0 0 .35rem; letter-spacing: -.03em; }
+        header > p { margin: 0; color: #d7e4ee; }
+        nav { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; margin-top: 1rem; }
+        nav a, nav button { color: white; font: inherit; }
+        nav a { padding: .45rem .7rem; text-decoration: none; border-radius: .35rem; }
+        nav a:hover, nav a:focus-visible { background: #ffffff1f; }
+        nav form { margin: 0; }
+        nav button { border: 1px solid #ffffff80; border-radius: .35rem; padding: .45rem .7rem; background: transparent; cursor: pointer; }
+        .sesion { margin-left: auto; color: #d7e4ee; font-size: .92rem; }
+        main { max-width: 1160px; margin: 2rem auto 3rem; padding: 0 1.25rem; }
+        a { color: #135b83; }
+        .panel { max-width: 620px; margin: 0 auto; padding: 1.5rem; border-radius: .65rem; background: white; box-shadow: 0 2px 12px #152b3b12; }
+        .panel form p { display: grid; gap: .35rem; margin: 1rem 0; }
+        input, select, textarea { box-sizing: border-box; width: 100%; padding: .65rem; border: 1px solid #aab6c0; border-radius: .35rem; font: inherit; }
+        input[type=submit], button[type=submit] { width: auto; padding: .65rem 1rem; border: 0; border-radius: .35rem; background: #183b56; color: white; font: inherit; cursor: pointer; }
+        .catalogo-hero { display: flex; justify-content: space-between; align-items: end; gap: 1rem; margin-bottom: 1.5rem; }
+        .catalogo-hero h2 { margin: 0 0 .4rem; color: #183b56; font-size: clamp(1.7rem, 4vw, 2.5rem); }
+        .catalogo-hero p { margin: 0; color: #526170; }
+        .resumen-tarjetas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 1.25rem 0; }
+        .tarjeta-resumen { padding: 1rem 1.15rem; border: 1px solid #e2e9ee; border-radius: .7rem; background: #ffffffd9; }
+        .tarjeta-resumen strong { display: block; color: #183b56; font-size: 1.65rem; }
+        .tarjeta-resumen span { color: #526170; font-size: .9rem; }
+        .filtros { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(180px, .6fr) auto auto; align-items: end; gap: .75rem; margin: 1.5rem 0 1rem; }
+        .filtros label { display: grid; gap: .35rem; color: #34495a; font-size: .9rem; font-weight: 600; }
+        .boton { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; box-sizing: border-box; padding: .6rem .95rem; border: 0; border-radius: .4rem; background: #e5edf2; color: #183b56; font: inherit; font-weight: 650; text-decoration: none; cursor: pointer; }
+        .boton-principal { background: #d96827; color: white; }
+        .boton:hover { filter: brightness(.96); }
+        .tabla-contenedor { overflow: hidden; background: white; border: 1px solid #e1e8ed; border-radius: .7rem; box-shadow: 0 5px 20px #152b3b12; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: .9rem 1rem; border-bottom: 1px solid #e7ebef; }
+        th { background: #eaf0f4; color: #34495a; font-size: .83rem; letter-spacing: .04em; text-transform: uppercase; }
+        tbody tr:hover { background: #f8fafb; }
+        tbody tr.sin-stock { background: #fff7f2; }
+        tbody tr:last-child td { border-bottom: 0; }
+        .precio { white-space: nowrap; color: #183b56; font-weight: 700; }
+        .producto-link { color: #183b56; font-weight: 650; text-decoration: none; }
+        .producto-link:hover { text-decoration: underline; }
+        .estado { display: inline-block; padding: .22rem .55rem; border-radius: 99px; background: #e4f4e9; color: #21653b; font-size: .82rem; font-weight: 650; white-space: nowrap; }
+        .estado-agotado { background: #ffeadf; color: #9c3c16; }
+        .vacio { padding: 2rem; text-align: center; }
+        .mensajes { max-width: 1100px; margin: 1rem auto; padding: 0 1.25rem; }
+        .errorlist { color: #9b1c1c; }
+        footer { padding: 1.25rem; color: #526170; text-align: center; font-size: .9rem; }
+        footer a { color: inherit; }
+        .opciones-inicio { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .opcion-inicio { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: 1.4rem; border: 1px solid #e1e8ed; border-radius: .7rem; background: white; color: #183b56; text-decoration: none; box-shadow: 0 5px 20px #152b3b12; }
+        .opcion-inicio > span:nth-child(2) span { display: block; margin-top: .35rem; color: #526170; }
+        .opcion-numero { display: grid; width: 2.7rem; height: 2.7rem; place-items: center; border-radius: 50%; background: #d96827; color: white; font-size: 1.3rem; font-weight: 700; }
+        .nota-demo { color: #526170; font-size: .9rem; }
+        .form-compra { display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+        .form-compra input { width: 6rem; }
+        .boton-compra { background: #26734d; color: white; }
+        .productos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 245px), 1fr)); gap: 1.15rem; align-items: stretch; }
+        .producto-card { overflow: hidden; display: flex; flex-direction: column; min-width: 0; border: 1px solid #e1e8ed; border-radius: .8rem; background: white; box-shadow: 0 5px 20px #152b3b12; transition: transform .18s ease, box-shadow .18s ease; }
+        .producto-card:hover { transform: translateY(-3px); box-shadow: 0 10px 26px #152b3b1c; }
+        .producto-imagen-enlace { position: relative; display: block; overflow: hidden; background: #eaf0f4; }
+        .producto-imagen { display: block; width: 100%; height: auto; aspect-ratio: 1.52; }
+        .etiqueta-agotado { position: absolute; top: .75rem; right: .75rem; padding: .3rem .65rem; border-radius: 99px; background: #fff; color: #9c3c16; font-size: .8rem; font-weight: 700; box-shadow: 0 2px 8px #152b3b20; }
+        .producto-card-contenido { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding: 1rem; }
+        .producto-categoria { margin: 0 0 .35rem; color: #607284; font-size: .78rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+        .producto-card h3 { margin: 0; min-height: 2.8em; color: #183b56; font-size: 1.05rem; line-height: 1.4; }
+        .producto-card h3 a { color: inherit; text-decoration: none; }
+        .producto-card h3 a:hover { text-decoration: underline; }
+        .producto-precio { margin: .55rem 0 .25rem; color: #183b56; font-size: 1.45rem; font-weight: 800; }
+        .producto-precio span { color: #607284; font-size: .7rem; font-weight: 650; }
+        .producto-stock { margin: 0 0 .85rem; color: #26734d; font-size: .87rem; font-weight: 650; }
+        .producto-stock.sin-unidades { color: #9c3c16; }
+        .tarjeta-form-compra { width: 100%; margin-top: auto; }
+        .tarjeta-form-compra label { color: #526170; font-size: .85rem; }
+        .tarjeta-form-compra input { width: 4.8rem; }
+        .tarjeta-form-compra .boton { flex: 1; }
+        .producto-card-contenido > .boton { width: 100%; margin-top: auto; }
+        .enlace-consulta-producto { margin-top: .75rem; font-size: .88rem; }
+        .boton-deshabilitado { width: 100%; margin-top: auto; background: #e5edf2; color: #607284; cursor: not-allowed; }
+        .productos-vacios { grid-column: 1 / -1; padding: 2rem; border: 1px dashed #aab6c0; border-radius: .7rem; color: #526170; text-align: center; }
+        .producto-detalle { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr); overflow: hidden; max-width: 980px; margin: 0 auto; border: 1px solid #e1e8ed; border-radius: .9rem; background: white; box-shadow: 0 8px 28px #152b3b14; }
+        .producto-detalle-imagen { align-self: center; background: #eaf0f4; }
+        .producto-detalle-imagen .producto-imagen { width: 100%; height: 100%; min-height: 340px; aspect-ratio: auto; }
+        .producto-detalle-contenido { padding: clamp(1.25rem, 4vw, 2.5rem); }
+        .producto-detalle-contenido h2 { margin: 0 0 .65rem; color: #183b56; font-size: clamp(1.6rem, 4vw, 2.25rem); }
+        .producto-detalle-contenido > .boton { margin-top: .5rem; }
+        .producto-detalle-contenido .form-compra { align-items: end; }
+        .seccion-historial { margin-top: 1.5rem; }
+        .estado-no-leido { font-weight: 700; }
+        .reloj { color: #d7e4ee; font-variant-numeric: tabular-nums; }
+        body.tema-oscuro { background: #17212b; color: #e6edf3; }
+        body.tema-oscuro main { color: #e6edf3; }
+        body.tema-oscuro .panel, body.tema-oscuro .tarjeta-resumen, body.tema-oscuro .opcion-inicio, body.tema-oscuro .tabla-contenedor, body.tema-oscuro .producto-card, body.tema-oscuro .producto-detalle { background: #253341; border-color: #405366; color: #e6edf3; }
+        body.tema-oscuro .catalogo-hero h2, body.tema-oscuro .producto-link, body.tema-oscuro .precio, body.tema-oscuro .tarjeta-resumen strong, body.tema-oscuro .opcion-inicio { color: #e6edf3; }
+        body.tema-oscuro .producto-card h3, body.tema-oscuro .producto-detalle-contenido h2, body.tema-oscuro .producto-precio { color: #e6edf3; }
+        body.tema-oscuro .producto-categoria, body.tema-oscuro .producto-precio span, body.tema-oscuro .tarjeta-form-compra label { color: #bdc9d4; }
+        body.tema-oscuro .catalogo-hero p, body.tema-oscuro .tarjeta-resumen span, body.tema-oscuro .opcion-inicio > span:nth-child(2) span, body.tema-oscuro .nota-demo, body.tema-oscuro .resumen { color: #bdc9d4; }
+        body.tema-oscuro th { background: #314354; color: #e6edf3; }
+        body.tema-oscuro td { border-color: #405366; }
+        body.tema-oscuro tbody tr:hover { background: #314354; }
+        body.tema-oscuro input, body.tema-oscuro select, body.tema-oscuro textarea { background: #17212b; color: #e6edf3; border-color: #607487; }
+        body.tema-oscuro .filtros label { color: #d7e4ee; }
+        @media (max-width: 760px) { .filtros { grid-template-columns: 1fr 1fr; } .catalogo-hero { align-items: start; flex-direction: column; } .opciones-inicio { grid-template-columns: 1fr; } .producto-detalle { grid-template-columns: 1fr; } .producto-detalle-imagen .producto-imagen { min-height: 0; } }
+        @media (max-width: 540px) { .resumen-tarjetas { grid-template-columns: 1fr; gap: .6rem; } .tarjeta-resumen { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; } .tarjeta-resumen strong { font-size: 1.25rem; } .filtros { grid-template-columns: 1fr; } th, td { padding: .7rem .55rem; } .sesion { width: 100%; margin-left: 0; } }
+    </style>
+</head>
+<body class="{% if tema_actual == 'dark' %}tema-oscuro{% endif %}">
+    <header>
+        <h1><a href="{% url 'inicio' %}" style="color: inherit; text-decoration: none;">Catálogo de Ferretería</a></h1>
+        <p class="reloj">Hora de Santiago: <time id="reloj" datetime="{% now 'c' %}">{% now 'H:i:s' %}</time></p>
+        <nav aria-label="Navegación principal">
+            <a href="{% url 'inicio' %}">Inicio</a>
+            <a href="{% url 'catalogo' %}">Comprar productos</a>
+            <a href="{% url 'consulta' %}">Consultas</a>
+            {% if user.is_authenticated %}
+                <span class="sesion">Hola, {{ user.username }}</span>
+                <a href="{% url 'historial' %}">Historial</a>
+                <a href="{% url 'notificaciones' %}">Notificaciones{% if avisos_pendientes %} ({{ avisos_pendientes }}){% endif %}</a>
+                {% if user.is_staff %}<a href="{% url 'admin:index' %}">Administración</a>{% endif %}
+                <form method="post" action="{% url 'cerrar_sesion' %}">
+                    {% csrf_token %}
+                    <button type="submit">Cerrar sesión</button>
+                </form>
+            {% else %}
+                <a href="{% url 'iniciar_sesion' %}">Iniciar sesión</a>
+                <a href="{% url 'registro' %}">Crear cuenta</a>
+            {% endif %}
+            <a href="{% url 'configuracion' %}">Configuración</a>
+            <a href="{% url 'admin:index' %}">Acceso administrador</a>
+        </nav>
+    </header>
+    {% if messages %}
+    <div class="mensajes" role="status">
+        {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+    </div>
+    {% endif %}
+    <main>{% block content %}{% endblock %}</main>
+    <footer>Catálogo de Ferretería · <a href="{% url 'admin:index' %}">Acceso al administrador Django</a></footer>
+    <script src="{% static 'catalogo/js/site.js' %}?v=4" defer></script>
+</body>
+</html>
