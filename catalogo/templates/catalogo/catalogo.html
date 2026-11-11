@@ -10,7 +10,7 @@
         <p>Encuentra herramientas, materiales y soluciones para tus próximos proyectos.</p>
     </div>
     {% if user.is_staff %}
-    <a class="boton boton-principal" href="{% url 'producto_crear' %}">Agregar producto</a>
+    <a class="boton boton-principal" href="{% url 'producto_crear' %}">Agregar unidades</a>
     {% endif %}
 </section>
 
@@ -70,11 +70,12 @@
             </p>
             {% if user.is_authenticated %}
                 {% if producto.stock > 0 %}
-                <form class="form-compra tarjeta-form-compra" method="post" action="{% url 'comprar_producto' producto.id %}">
+                <form class="form-compra tarjeta-form-compra" method="post" action="{% url 'carrito_agregar' producto.id %}">
                     {% csrf_token %}
+                    <input type="hidden" name="next" value="{% url 'catalogo' %}#producto-{{ producto.id }}">
                     <label for="cantidad-{{ producto.id }}">Cantidad</label>
                     <input id="cantidad-{{ producto.id }}" type="number" name="cantidad" value="1" min="1" max="{{ producto.stock }}" required>
-                    <button class="boton boton-compra" type="submit">Comprar</button>
+                    <button class="boton boton-compra" type="submit">Agregar al carro</button>
                 </form>
                 {% else %}
                 <button class="boton boton-deshabilitado" type="button" disabled>Sin stock</button>

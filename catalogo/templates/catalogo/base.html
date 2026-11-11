@@ -11,7 +11,8 @@
         .encabezado { padding: .9rem max(1.25rem, calc((100% - 1160px) / 2)); background: #183b56; color: white; box-shadow: 0 3px 14px #152b3b20; }
         .encabezado-contenido { display: flex; max-width: 1160px; margin: 0 auto; align-items: center; justify-content: space-between; gap: 1.5rem; }
         .marca { display: inline-flex; flex: 0 0 auto; align-items: center; gap: .7rem; color: white; text-decoration: none; }
-        .marca-icono { display: grid; width: 2.6rem; height: 2.6rem; place-items: center; border-radius: .7rem; background: #d96827; color: white; font-size: 1.25rem; font-weight: 800; }
+        .marca-icono { display: grid; width: 2.6rem; height: 2.6rem; place-items: center; overflow: hidden; border-radius: .7rem; background: #b9f3fb; }
+        .marca-icono img { display: block; width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; }
         .marca strong, .marca small { display: block; }
         .marca strong { font-size: 1.05rem; letter-spacing: -.02em; }
         .marca small { margin-top: .12rem; color: #d7e4ee; font-size: .75rem; }
@@ -21,6 +22,9 @@
         nav a:hover, nav a:focus-visible { background: #ffffff1f; }
         nav form { margin: 0; }
         nav button { border: 1px solid #ffffff80; border-radius: .4rem; padding: .5rem .7rem; background: transparent; cursor: pointer; }
+        .enlace-carrito { display: inline-flex; align-items: center; gap: .35rem; }
+        .icono-carrito { width: 1.45rem; height: 1.1rem; object-fit: contain; filter: invert(1); }
+        .contador-carrito { display: inline-grid; min-width: 1.25rem; height: 1.25rem; place-items: center; padding: 0 .15rem; border-radius: 99px; background: #d96827; color: white; font-size: .75rem; font-weight: 800; }
         .sesion { padding: .4rem .55rem; color: #d7e4ee; font-size: .9rem; }
         main { max-width: 1160px; margin: 2rem auto 3rem; padding: 0 1.25rem; }
         body > main { box-sizing: border-box; width: 100%; flex: 1; }
@@ -100,6 +104,15 @@
         .enlace-consulta-producto { margin-top: .75rem; font-size: .88rem; }
         .boton-deshabilitado { width: 100%; margin-top: auto; background: #e5edf2; color: #607284; cursor: not-allowed; }
         .productos-vacios { grid-column: 1 / -1; padding: 2rem; border: 1px dashed #aab6c0; border-radius: .7rem; color: #526170; text-align: center; }
+        .carrito-lista { display: grid; gap: .75rem; max-width: 800px; margin: 0 auto 1.25rem; }
+        .carrito-item { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; align-items: center; gap: 1rem; padding: 1rem; border: 1px solid #e1e8ed; border-radius: .7rem; background: white; box-shadow: 0 3px 12px #152b3b0d; }
+        .carrito-item h3, .carrito-item p { margin: 0; }
+        .carrito-item h3 { color: #183b56; font-size: 1rem; }
+        .carrito-item small { color: #607284; }
+        .carrito-cantidad { width: 5rem; }
+        .carrito-resumen { max-width: 800px; margin: 0 auto; padding: 1.25rem; border-radius: .7rem; background: #eaf0f4; text-align: right; }
+        .carrito-total { margin: 0 0 1rem; color: #183b56; font-size: 1.35rem; font-weight: 800; }
+        .carrito-vacio { max-width: 650px; margin: 0 auto; padding: 2.5rem; border: 1px dashed #aab6c0; border-radius: .7rem; background: white; text-align: center; }
         .producto-detalle { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr); overflow: hidden; max-width: 980px; margin: 0 auto; border: 1px solid #e1e8ed; border-radius: .9rem; background: white; box-shadow: 0 8px 28px #152b3b14; }
         .producto-detalle-imagen { align-self: center; background: #eaf0f4; }
         .producto-detalle-imagen .producto-imagen { width: 100%; height: 100%; min-height: 340px; aspect-ratio: auto; }
@@ -108,6 +121,11 @@
         .producto-detalle-contenido > .boton { margin-top: .5rem; }
         .producto-detalle-contenido .form-compra { align-items: end; }
         .seccion-historial { margin-top: 1.5rem; }
+        .perfil-cuenta { padding-bottom: 1rem; border-bottom: 1px solid #e1e8ed; }
+        .perfil-cuenta .texto-etiqueta { margin: 0 0 .35rem; color: #b04d1b; font-size: .75rem; font-weight: 800; letter-spacing: .12em; }
+        .perfil-cuenta h2 { margin: 0; color: #183b56; }
+        .cuenta-opciones { display: flex; flex-wrap: wrap; gap: .65rem; margin: 1.25rem 0 1.5rem; }
+        .cuenta-opciones form { margin: 0; }
         .estado-no-leido { font-weight: 700; }
         body.tema-oscuro { background: #17212b; color: #e6edf3; }
         body.tema-oscuro main { color: #e6edf3; }
@@ -122,39 +140,40 @@
         body.tema-oscuro tbody tr:hover { background: #314354; }
         body.tema-oscuro input, body.tema-oscuro select, body.tema-oscuro textarea { background: #17212b; color: #e6edf3; border-color: #607487; }
         body.tema-oscuro .filtros label { color: #d7e4ee; }
+        body.tema-administrador { background: #d5fbff; }
+        body.tema-administrador .encabezado, body.tema-administrador .site-footer { background: linear-gradient(135deg, #102a43, #24113f); }
+        body.tema-administrador .boton, body.tema-administrador input[type=submit], body.tema-administrador button[type=submit] { background: linear-gradient(135deg, #173f6d, #35205f); color: white; }
+        body.tema-administrador .boton-principal, body.tema-administrador .boton-compra { background: linear-gradient(135deg, #124e78, #45205f); color: white; }
+        body.tema-administrador .panel, body.tema-administrador .producto-card, body.tema-administrador .producto-detalle, body.tema-administrador .tabla-contenedor, body.tema-administrador .carrito-vacio { border-color: #9adce3; }
         @media (max-width: 760px) { .encabezado-contenido { align-items: flex-start; flex-direction: column; gap: .75rem; } nav { justify-content: flex-start; } .filtros { grid-template-columns: 1fr 1fr; } .catalogo-hero { align-items: start; flex-direction: column; } .producto-detalle { grid-template-columns: 1fr; } .producto-detalle-imagen .producto-imagen { min-height: 0; } .footer-contenido { grid-template-columns: 1fr 1fr; } .footer-columna:last-child { grid-column: 1 / -1; } }
         @media (max-width: 540px) { .resumen-tarjetas { grid-template-columns: 1fr; gap: .6rem; } .tarjeta-resumen { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; } .tarjeta-resumen strong { font-size: 1.25rem; } .filtros { grid-template-columns: 1fr; } th, td { padding: .7rem .55rem; } .footer-contenido { grid-template-columns: 1fr; gap: 1.4rem; } .footer-columna:last-child { grid-column: auto; } }
     </style>
 </head>
-<body class="{% if tema_actual == 'dark' %}tema-oscuro{% endif %}">
+<body class="{% if tema_actual == 'dark' %}tema-oscuro {% endif %}{% if user.is_staff %}tema-administrador{% endif %}">
     <header class="encabezado">
         <div class="encabezado-contenido">
         <a class="marca" href="{% url 'inicio' %}">
-            <span class="marca-icono" aria-hidden="true">F</span>
+            <span class="marca-icono"><img src="{% static 'catalogo/images/logo-ferreteria.png' %}" alt="Logo Ferretería"></span>
             <span><strong>Ferretería</strong><small>Todo para tu proyecto</small></span>
         </a>
         <nav aria-label="Navegación principal">
             <a href="{% url 'catalogo' %}">Productos</a>
-            <a href="{% url 'reporte_resumen_categorias' %}">Resumen por categorÃ­a</a>
-            <a href="{% url 'reporte_stock_critico' %}">Stock crÃ­tico</a>
-            <a href="#contacto">Contacto</a>
-            <a href="#ayuda">Ayuda</a>
-            <a href="{% url 'configuracion' %}">Configuración</a>
+            <a class="enlace-carrito" href="{% url 'carrito' %}" aria-label="Ver carro de compras">
+                <img class="icono-carrito" src="{% static 'catalogo/images/carrito.png' %}" alt="">
+                <span>Carro</span>{% if carrito_cantidad %}<span class="contador-carrito">{{ carrito_cantidad }}</span>{% endif %}
+            </a>
+            {% if user.is_staff %}
+            <a href="{% url 'reporte_resumen_categorias' %}">Resumen por categoría</a>
+            <a href="{% url 'reporte_stock_critico' %}">Stock crítico</a>
+            {% endif %}
             {% if user.is_authenticated %}
                 <span class="sesion">Hola, {{ user.username }}</span>
                 <a href="{% url 'historial' %}">Mi cuenta</a>
                 <a href="{% url 'notificaciones' %}">Avisos{% if avisos_pendientes %} ({{ avisos_pendientes }}){% endif %}</a>
-                {% if user.is_staff %}<a href="{% url 'admin:index' %}">Administración</a>{% endif %}
-                <form method="post" action="{% url 'cerrar_sesion' %}">
-                    {% csrf_token %}
-                    <button type="submit">Cerrar sesión</button>
-                </form>
             {% else %}
                 <a href="{% url 'iniciar_sesion' %}">Iniciar sesión</a>
                 <a href="{% url 'registro' %}">Crear cuenta</a>
             {% endif %}
-            <a href="{% url 'configuracion' %}">Configuración</a>
-            <a href="{% url 'admin:index' %}">Acceso administrador</a>
         </nav>
         </div>
     </header>
@@ -167,7 +186,7 @@
     <footer class="site-footer">
         <div class="footer-contenido">
             <section class="footer-columna footer-empresa" id="empresa">
-                <span class="marca-icono" aria-hidden="true">F</span>
+                <span class="marca-icono"><img src="{% static 'catalogo/images/logo-ferreteria.png' %}" alt="Logo Ferretería"></span>
                 <div>
                     <h2>Nuestra empresa</h2>
                     <p>Un catálogo de ferretería para encontrar lo que necesitas para cada proyecto.</p>
@@ -175,12 +194,16 @@
             </section>
             <nav class="footer-columna footer-links" aria-label="Enlaces del pie de página">
                 <h2>Enlaces útiles</h2>
-                <a href="#contacto">Contacto</a>
-                <a href="#ayuda">Ayuda</a>
+                <a href="{% url 'consulta' %}">Contacto</a>
+                <a href="{% url 'ayuda' %}">Ayuda</a>
                 <a href="{% url 'configuracion' %}">Configuración</a>
-                <a href="#terminos">Términos y condiciones</a>
-                <a href="#empresa">Nuestra empresa</a>
-                <a href="#servicio-cliente">Servicio al cliente</a>
+                {% if user.is_staff %}
+                <a href="{% url 'producto_crear' %}">Agregar producto</a>
+                <a href="{% url 'admin:index' %}">Administración</a>
+                {% endif %}
+                <a href="{% url 'terminos' %}">Términos y condiciones</a>
+                <a href="{% url 'inicio' %}#empresa">Nuestra empresa</a>
+                <a href="{% url 'inicio' %}#servicio-cliente">Servicio al cliente</a>
             </nav>
             <div class="footer-columna">
                 <p id="contacto"><strong>Contacto:</strong> <a href="{% url 'consulta' %}">envíanos una consulta</a> sobre productos o disponibilidad.</p>
@@ -189,7 +212,7 @@
                 <p id="terminos"><strong>Términos y condiciones:</strong> las compras y pagos de este sitio son simulados; no se realizan cobros.</p>
             </div>
         </div>
-        <div class="footer-final">Catálogo de Ferretería · <a href="{% url 'admin:index' %}">Acceso al administrador Django</a></div>
+        <div class="footer-final">Catálogo de Ferretería · {% if user.is_staff %}<a href="{% url 'admin:index' %}">Administración Django</a>{% else %}Sitio de demostración{% endif %}</div>
     </footer>
     <script src="{% static 'catalogo/js/site.js' %}?v=5" defer></script>
 </body>

@@ -1,0 +1,15 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Contacto | Ferretería{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <h2>¿Todavía necesitas ayuda?</h2>
+    <p>Contáctanos y cuéntanos qué necesitas. Nuestro equipo podrá responderte sobre productos, disponibilidad y orientación para tu proyecto.</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar consulta</button>
+    </form>
+</section>
+{% endblock %}

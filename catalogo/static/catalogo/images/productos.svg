@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="manuales" viewBox="0 0 640 420">
+    <rect width="640" height="420" rx="28" fill="#e8f0f6"/>
+    <circle cx="500" cy="86" r="104" fill="#d2e2ef"/>
+    <path d="M0 330c116-62 231-58 346-4s196 45 294-9v103H0z" fill="#d5e4ee"/>
+    <ellipse cx="321" cy="335" rx="176" ry="23" fill="#b6c9d7"/>
+    <g transform="rotate(-36 324 207)">
+      <rect x="302" y="184" width="42" height="146" rx="18" fill="#d96827"/>
+      <path d="M282 143h83v47h-83z" rx="8" fill="#183b56"/>
+      <path d="M282 143h83v19h-83z" fill="#2e6584"/>
+      <path d="M301 193h44v20h-44z" fill="#f3a45d"/>
+    </g>
+    <g transform="rotate(34 409 216)" fill="none" stroke="#183b56" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+      <path d="M405 162v139"/>
+      <path d="M376 151h58l-7 30h-44z"/>
+      <path d="M383 298h44"/>
+    </g>
+    <path d="M109 119h87M152 76v86" stroke="#fff" stroke-linecap="round" stroke-width="12" opacity=".75"/>
+  </symbol>
+  <symbol id="electricas" viewBox="0 0 640 420">
+    <rect width="640" height="420" rx="28" fill="#e8f0f6"/>
+    <circle cx="493" cy="95" r="112" fill="#d2e2ef"/>
+    <path d="M0 330c127-69 233-51 343-3 96 41 204 36 297-8v101H0z" fill="#d5e4ee"/>
+    <ellipse cx="321" cy="335" rx="180" ry="22" fill="#b6c9d7"/>
+    <path d="M180 179a76 76 0 0 1 76-76h92a67 67 0 0 1 0 134h-14v37H249v-42h-24a45 45 0 0 1-45-45z" fill="#d96827"/>
+    <path d="M267 103h81v46h-81z" fill="#f3a45d"/>
+    <path d="M330 237h70v40h-70z" fill="#183b56"/>
+    <path d="M366 277h67v24h-67z" fill="#2e6584"/>
+    <path d="M243 172h95" stroke="#fff" stroke-linecap="round" stroke-width="13"/>
+    <path d="M203 147h34M203 191h34" stroke="#183b56" stroke-linecap="round" stroke-width="12"/>
+    <path d="M410 153l-33 52M410 153l37 52" stroke="#183b56" stroke-linecap="round" stroke-width="11"/>
+  </symbol>
+  <symbol id="fijaciones" viewBox="0 0 640 420">
+    <rect width="640" height="420" rx="28" fill="#edf1f3"/>
+    <circle cx="490" cy="91" r="105" fill="#dce5e9"/>
+    <path d="M0 326c114-56 233-56 346-5 99 45 199 42 294-4v103H0z" fill="#d7e1e5"/>
+    <ellipse cx="321" cy="337" rx="164" ry="19" fill="#bdcbd1"/>
+    <g transform="rotate(-28 310 210)">
+      <path d="M304 111h30v173h-30z" fill="#7b8d99"/>
+      <path d="M294 111h50v45h-50z" rx="9" fill="#d96827"/>
+      <path d="M304 284h30l-15 26z" fill="#536774"/>
+      <path d="M304 178h30m-30 19h30m-30 19h30m-30 19h30" stroke="#c5d0d5" stroke-width="5"/>
+    </g>
+    <g transform="rotate(24 408 218)">
+      <path d="M402 129h25v157h-25z" fill="#8797a0"/>
+      <path d="M389 129h51v40h-51z" rx="8" fill="#183b56"/>
+      <path d="M402 286h25l-12.5 25z" fill="#536774"/>
+      <path d="M402 188h25m-25 20h25m-25 20h25m-25 20h25" stroke="#c5d0d5" stroke-width="5"/>
+    </g>
+    <circle cx="171" cy="129" r="12" fill="#fff" opacity=".8"/>
+    <circle cx="207" cy="92" r="8" fill="#fff" opacity=".8"/>
+  </symbol>
+  <symbol id="pinturas" viewBox="0 0 640 420">
+    <rect width="640" height="420" rx="28" fill="#f4eee5"/>
+    <circle cx="500" cy="90" r="110" fill="#eee0cb"/>
+    <path d="M0 330c116-63 228-56 342-4s204 43 298-6v100H0z" fill="#eadcc8"/>
+    <ellipse cx="318" cy="338" rx="171" ry="20" fill="#d3c2aa"/>
+    <path d="M244 168h147l-12 131H256z" fill="#d96827"/>
+    <path d="M244 168h147v34H244z" fill="#183b56"/>
+    <path d="M272 168v-21a46 46 0 0 1 92 0v21" fill="none" stroke="#536774" stroke-width="12"/>
+    <rect x="268" y="222" width="99" height="53" rx="8" fill="#fff8e9"/>
+    <path d="M290 251h55" stroke="#f0b346" stroke-linecap="round" stroke-width="13"/>
+    <path d="M397 137h96v17h-96z" fill="#183b56"/>
+    <path d="M475 154h21v60h-21z" fill="#d96827"/>
+    <path d="M459 206h54v37h-54z" rx="8" fill="#f0b346"/>
+    <path d="M481 242v41" stroke="#536774" stroke-width="12"/>
+  </symbol>
+  <symbol id="electricidad" viewBox="0 0 640 420">
+    <rect width="640" height="420" rx="28" fill="#eaf2f2"/>
+    <circle cx="496" cy="86" r="106" fill="#d5e6e4"/>
+    <path d="M0 328c113-58 227-57 342-5 107 47 202 41 298-5v102H0z" fill="#d5e4df"/>
+    <ellipse cx="321" cy="338" rx="163" ry="20" fill="#b8cec6"/>
+    <path d="M320 91a90 90 0 0 0-54 162c17 13 24 27 25 44h58c1-17 9-31 25-44A90 90 0 0 0 320 91z" fill="#f4c44e"/>
+    <path d="M291 300h58v22h-58zm8 31h42v15h-42z" fill="#183b56"/>
+    <path d="M320 133l-25 53h27l-14 40 45-60h-29l14-33z" fill="#fff8e9"/>
+    <path d="M122 148h55m-28-28v56" stroke="#fff" stroke-linecap="round" stroke-width="11" opacity=".8"/>
+  </symbol>
+  <symbol id="seguridad" viewBox="0 0 640 420">
+    <rect width="640" height="420" rx="28" fill="#f0f1e8"/>
+    <circle cx="500" cy="91" r="108" fill="#e3e5d2"/>
+    <path d="M0 330c117-60 232-58 344-5 102 45 203 40 296-6v101H0z" fill="#e1e2d1"/>
+    <ellipse cx="318" cy="340" rx="170" ry="19" fill="#c7c9b5"/>
+    <path d="M188 200a132 132 0 0 1 264 0v28H188z" fill="#f0b346"/>
+    <path d="M188 200h264v31H188z" rx="12" fill="#d96827"/>
+    <path d="M320 92v105" stroke="#fff4d5" stroke-width="10"/>
+    <path d="M249 274h142l29 57H220z" fill="#183b56"/>
+    <path d="M320 276v55" stroke="#f0b346" stroke-width="15"/>
+    <path d="M244 288h28v27h-28zm124 0h28v27h-28z" fill="#d96827"/>
+  </symbol>
+  <symbol id="construccion" viewBox="0 0 640 420">
+    <rect width="640" height="420" rx="28" fill="#f2ece5"/>
+    <circle cx="495" cy="88" r="105" fill="#e9ddd1"/>
+    <path d="M0 329c112-57 229-57 343-5 102 45 203 41 297-5v101H0z" fill="#e5d8cb"/>
+    <ellipse cx="321" cy="339" rx="172" ry="20" fill="#cdbbae"/>
+    <path d="M177 190h113v61H177zm125 0h113v61H302zm-63 73h113v61H239zm125 0h113v61H364z" fill="#d96827"/>
+    <path d="M177 217h113m12 0h113m-176 73h113m12 0h113" stroke="#f5b375" stroke-width="7"/>
+    <path d="M288 115l83 35-43 103-83-35z" fill="#183b56"/>
+    <path d="M271 211l-27 58 30 12 27-58z" fill="#d8e0e4"/>
+    <path d="M335 230l44 18" stroke="#fff" stroke-linecap="round" stroke-width="8"/>
+  </symbol>
+  <symbol id="jardin" viewBox="0 0 640 420">
+    <rect width="640" height="420" rx="28" fill="#e9f1e7"/>
+    <circle cx="496" cy="88" r="106" fill="#d8e8d5"/>
+    <path d="M0 329c117-59 230-58 344-5 101 45 201 42 296-5v101H0z" fill="#d3e4ce"/>
+    <ellipse cx="320" cy="339" rx="169" ry="19" fill="#b9d0b3"/>
+    <path d="M313 179h19v137h-19z" fill="#697f47"/>
+    <path d="M322 223c-49 3-82-18-87-57 43-4 75 17 87 57zm4-32c4-43 33-69 75-66-3 41-33 67-75 66z" fill="#5f9655"/>
+    <path d="M322 162c-8-39-1-69 29-91 23 32 13 66-29 91z" fill="#7cad5e"/>
+    <path d="M278 304h87l-13 39h-61z" fill="#d96827"/>
+    <path d="M268 299h107v18H268z" fill="#183b56"/>
+    <path d="M172 173l46 19-39 94-46-19z" fill="#6f7f87"/>
+    <path d="M174 254l39 16-39 48-33-13z" fill="#d96827"/>
+    <path d="M180 156l-16-37m31 45 30-26" stroke="#7cad5e" stroke-linecap="round" stroke-width="10"/>
+  </symbol>
+</svg>

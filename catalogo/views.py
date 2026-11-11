@@ -15,7 +15,7 @@ from .models import AvisoCliente, Compra, ConfiguracionSitio, Producto
 
 
 def inicio(request):
-    return render(request, 'catalogo/inicio.html')
+    return catalogo(request)
 
 
 def catalogo(request):
@@ -102,6 +102,157 @@ def detalle_producto(request, producto_id):
             ],
         },
     )
+
+
+def _carrito_items(request):
+    carrito = request.session.get('carrito', {})
+    productos = Producto.objects.filter(pk__in=carrito.keys())
+    productos_por_id = {str(producto.pk): producto for producto in productos}
+    items = []
+    total = 0
+    for producto_id, cantidad in carrito.items():
+        producto = productos_por_id.get(str(producto_id))
+        if producto is None:
+            continue
+        cantidad = int(cantidad)
+        subtotal = producto.precio * cantidad
+        items.append({
+            'producto': producto,
+            'cantidad': cantidad,
+            'subtotal': subtotal,
+            'max_quantity': producto.stock + cantidad,
+        })
+        total += subtotal
+    return items, total
+
+
+def carrito(request):
+    items, total = _carrito_items(request)
+    return render(
+        request,
+        'catalogo/carrito.html',
+        {'items': items, 'total': total},
+    )
+
+
+@transaction.atomic
+def agregar_al_carrito(request, producto_id):
+    if request.method != 'POST':
+        return redirect('detalle_producto', producto_id=producto_id)
+
+    producto = get_object_or_404(Producto, pk=producto_id)
+    try:
+        cantidad = int(request.POST.get('cantidad', '1'))
+    except (TypeError, ValueError):
+        cantidad = 0
+    carrito = request.session.get('carrito', {})
+    cantidad_actual = int(carrito.get(str(producto.pk), 0))
+    if cantidad < 1:
+        messages.error(request, 'Ingresa una cantidad válida.')
+    elif cantidad > producto.stock:
+        messages.error(
+            request,
+            f'Solo puedes agregar hasta {producto.stock} unidades de {producto.nombre}.',
+        )
+    else:
+        reservado = Producto.objects.filter(
+            pk=producto.pk,
+            stock__gte=cantidad,
+        ).update(stock=F('stock') - cantidad)
+        if not reservado:
+            messages.error(request, 'El stock cambió; intenta nuevamente.')
+        else:
+            carrito[str(producto.pk)] = cantidad_actual + cantidad
+            request.session['carrito'] = carrito
+            messages.success(request, f'{producto.nombre} se agregó al carro.')
+    return redirect(request.POST.get('next') or 'catalogo')
+
+
+@transaction.atomic
+def actualizar_carrito(request):
+    if request.method == 'POST':
+        carrito = request.session.get('carrito', {})
+        for producto_id, valor in request.POST.items():
+            if not producto_id.startswith('producto_'):
+                continue
+            producto_id = producto_id.removeprefix('producto_')
+            try:
+                cantidad = int(valor)
+            except (TypeError, ValueError):
+                continue
+            producto = Producto.objects.filter(pk=producto_id).first()
+            cantidad_anterior = int(carrito.get(producto_id, 0))
+            if producto is None or cantidad <= 0:
+                if producto is not None and cantidad_anterior:
+                    Producto.objects.filter(pk=producto.pk).update(
+                        stock=F('stock') + cantidad_anterior,
+                    )
+                carrito.pop(producto_id, None)
+            elif cantidad > cantidad_anterior:
+                diferencia = cantidad - cantidad_anterior
+                reservado = Producto.objects.filter(
+                    pk=producto.pk,
+                    stock__gte=diferencia,
+                ).update(stock=F('stock') - diferencia)
+                if reservado:
+                    carrito[producto_id] = cantidad
+                else:
+                    messages.error(
+                        request,
+                        f'No hay stock suficiente para aumentar {producto.nombre}.',
+                    )
+            else:
+                Producto.objects.filter(pk=producto.pk).update(
+                    stock=F('stock') + (cantidad_anterior - cantidad),
+                )
+                carrito[producto_id] = cantidad
+        request.session['carrito'] = carrito
+        messages.success(request, 'Carro actualizado.')
+    return redirect('carrito')
+
+
+@transaction.atomic
+def eliminar_del_carrito(request, producto_id):
+    if request.method == 'POST':
+        carrito = request.session.get('carrito', {})
+        cantidad = int(carrito.pop(str(producto_id), 0))
+        if cantidad:
+            Producto.objects.filter(pk=producto_id).update(
+                stock=F('stock') + cantidad,
+            )
+        request.session['carrito'] = carrito
+        messages.success(request, 'Producto quitado del carro.')
+    return redirect('carrito')
+
+
+@login_required
+@transaction.atomic
+def pagar_carrito(request):
+    if request.method != 'POST':
+        return redirect('carrito')
+    items, _ = _carrito_items(request)
+    if not items:
+        messages.error(request, 'Tu carro está vacío.')
+        return redirect('carrito')
+    for item in items:
+        Compra.objects.create(
+            usuario=request.user,
+            producto=item['producto'],
+            nombre_producto=item['producto'].nombre,
+            precio_unitario=item['producto'].precio,
+            cantidad=item['cantidad'],
+        )
+    request.session['carrito'] = {}
+    messages.success(request, 'Pago de demostración realizado; no se efectuó ningún cobro.')
+    return redirect('historial')
+
+
+def ayuda(request):
+    return render(request, 'catalogo/ayuda.html')
+
+
+def terminos(request):
+    return render(request, 'catalogo/terminos.html')
 
 
 class GestionProductosStaffMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -222,7 +373,7 @@ class CerrarSesionView(LogoutView):
     next_page = reverse_lazy('inicio')
 
 
-class CrearConsultaView(LoginRequiredMixin, CreateView):
+class CrearConsultaView(CreateView):
     form_class = ConsultaClienteForm
     template_name = 'catalogo/consulta.html'
     success_url = reverse_lazy('consulta_enviada')
@@ -246,15 +397,17 @@ class CrearConsultaView(LoginRequiredMixin, CreateView):
 
     def get_initial(self):
         initial = super().get_initial()
-        initial['nombre'] = self.request.user.get_full_name() or self.request.user.username
-        initial['correo'] = self.request.user.email
+        if self.request.user.is_authenticated:
+            initial['nombre'] = self.request.user.get_full_name() or self.request.user.username
+            initial['correo'] = self.request.user.email
         producto_id = self.request.GET.get('producto', '')
         if producto_id.isdigit():
             initial['producto'] = int(producto_id)
         return initial
 
     def form_valid(self, form):
-        form.instance.usuario = self.request.user
+        if self.request.user.is_authenticated:
+            form.instance.usuario = self.request.user
         response = super().form_valid(form)
         if self.request.session.get('notificaciones_activas', True):
             AvisoCliente.objects.create(
@@ -264,7 +417,6 @@ class CrearConsultaView(LoginRequiredMixin, CreateView):
         return response
 
 
-@login_required
 def consulta_enviada(request):
     return render(request, 'catalogo/consulta_enviada.html')
 

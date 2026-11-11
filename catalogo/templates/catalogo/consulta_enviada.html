@@ -1,0 +1,11 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Consulta enviada | Ferretería{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <h2>Consulta enviada</h2>
+    <p>Gracias por escribirnos. Tu consulta quedó registrada.</p>
+    <p><a href="{% url 'inicio' %}">Volver al catálogo</a></p>
+</section>
+{% endblock %}

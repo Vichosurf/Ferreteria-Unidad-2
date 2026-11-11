@@ -1,0 +1,48 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Carro de compras | Ferretería{% endblock %}
+
+{% block content %}
+<section class="catalogo-hero">
+    <div>
+        <p class="texto-etiqueta">LISTA DE COMPRA</p>
+        <h2>Mi carro de supermercado</h2>
+        <p>Revisa los productos que quieres comprar antes de pagar.</p>
+    </div>
+</section>
+
+{% if items %}
+<form method="post" action="{% url 'carrito_actualizar' %}">
+    {% csrf_token %}
+    <div class="carrito-lista">
+        {% for item in items %}
+        <article class="carrito-item">
+            <div>
+                <h3><a class="producto-link" href="{% url 'detalle_producto' item.producto.pk %}">{{ item.producto.nombre }}</a></h3>
+                <small>${{ item.producto.precio }} CLP por unidad</small>
+            </div>
+            <label for="producto-{{ item.producto.pk }}">Cantidad</label>
+            <input class="carrito-cantidad" id="producto-{{ item.producto.pk }}" type="number" name="producto_{{ item.producto.pk }}" value="{{ item.cantidad }}" min="1" max="{{ item.max_quantity }}">
+            <strong>${{ item.subtotal }} CLP</strong>
+            <button class="boton" type="submit" formaction="{% url 'carrito_eliminar' item.producto.pk %}" formmethod="post">Quitar</button>
+        </article>
+        {% endfor %}
+    </div>
+    <div class="carrito-resumen">
+        <p class="carrito-total">Total: ${{ total }} CLP</p>
+        <button class="boton" type="submit">Actualizar carro</button>
+        {% if user.is_authenticated %}
+        <button class="boton boton-principal" type="submit" formaction="{% url 'carrito_pagar' %}">Pagar</button>
+        {% else %}
+        <a class="boton boton-principal" href="{% url 'iniciar_sesion' %}?next={% url 'carrito' %}">Iniciar sesión para pagar</a>
+        {% endif %}
+    </div>
+</form>
+{% else %}
+<section class="carrito-vacio">
+    <h2>Tu carro está vacío</h2>
+    <p>Agrega productos desde el catálogo para preparar tu lista de compra.</p>
+    <a class="boton boton-principal" href="{% url 'catalogo' %}">Ver productos</a>
+</section>
+{% endif %}
+{% endblock %}

@@ -30,16 +30,211 @@ class CatalogoTests(TestCase):
         self.assertContains(response, 'Agotado')
         self.assertTemplateUsed(response, 'catalogo/catalogo.html')
 
+    def test_alargador_muestra_su_imagen_especifica(self):
+        alargador = Producto.objects.create(
+            nombre='Alargador eléctrico 5 metros',
+            categoria='Electricidad',
+            precio=8990,
+            stock=10,
+        )
+
+        respuesta = self.client.get(
+            reverse('detalle_producto', args=[alargador.pk]),
+        )
+
+        self.assertContains(respuesta, 'catalogo/images/alargador-electrico-5m.png')
+        self.assertContains(respuesta, 'Alargador eléctrico de 5 metros')
+
+    def test_productos_adicionales_muestran_sus_imagenes_especificas(self):
+        productos = (
+            (
+                'Alicate universal 8 pulgadas',
+                'catalogo/images/alicate-universal-8-pulgadas.png',
+            ),
+            (
+                'Ampolleta LED luz cálida 9 W',
+                'catalogo/images/ampolleta-led-luz-calida-9w.png',
+            ),
+            (
+                'Atornillador inalámbrico 12 V',
+                'catalogo/images/atornillador-inalambrico-12v.png',
+            ),
+            (
+                'Tornillo para madera 2 pulgadas, caja 100 unidades',
+                'catalogo/images/tornillo-madera-2-pulgadas.png',
+            ),
+            (
+                'Tijera de podar 8 pulgadas',
+                'catalogo/images/tijera-podar-8-pulgadas.png',
+            ),
+            (
+                'Tarugo nylon 8 mm, bolsa 50 unidades',
+                'catalogo/images/tarugo-nylon-8mm.png',
+            ),
+            (
+                'Taladro percutor 650 W',
+                'catalogo/images/taladro-percutor-650w.png',
+            ),
+            (
+                'Sierra circular 7 1/4 pulgadas',
+                'catalogo/images/sierra-circular-7-1-4-pulgadas.png',
+            ),
+            (
+                'Set de destornilladores 6 piezas',
+                'catalogo/images/set-destornilladores-6-piezas.png',
+            ),
+            (
+                'Set de brocas para madera 8 piezas',
+                'catalogo/images/set-brocas-madera-8-piezas.png',
+            ),
+            (
+                'Serrucho carpintero 20 pulgadas',
+                'catalogo/images/serrucho-carpintero-20-pulgadas.png',
+            ),
+            (
+                'Rodillo antigota 18 cm',
+                'catalogo/images/rodillo-antigota-18cm.png',
+            ),
+            (
+                'Plancha yeso cartón 10 mm',
+                'catalogo/images/plancha-yeso-carton-10mm.png',
+            ),
+            (
+                'Pistola de silicona eléctrica',
+                'catalogo/images/pistola-silicona-electrica.png',
+            ),
+            (
+                'Pintura látex interior blanco 1 galón',
+                'catalogo/images/pintura-latex-interior-blanco-1-galon.png',
+            ),
+            (
+                'Perno hexagonal galvanizado 3/8 pulgada',
+                'catalogo/images/perno-hexagonal-galvanizado-3-8-pulgada.png',
+            ),
+            (
+                'Bisagra zincada 3 pulgadas, par',
+                'catalogo/images/bisagra-zincada-3-pulgadas-par.png',
+            ),
+            (
+                'Pala jardín mango de madera',
+                'catalogo/images/pala-jardin-mango-madera.png',
+            ),
+            (
+                'Nivel de aluminio 60 cm',
+                'catalogo/images/nivel-aluminio-60cm.png',
+            ),
+            (
+                'Mascarilla respiratoria con filtro',
+                'catalogo/images/mascarilla-respiratoria-filtro.png',
+            ),
+            (
+                'Broca para concreto 8 mm',
+                'catalogo/images/broca-concreto-8mm.png',
+            ),
+            (
+                'Brocha profesional 2 pulgadas',
+                'catalogo/images/brocha-profesional-2-pulgadas.png',
+            ),
+            (
+                'Candado de bronce 40 mm',
+                'catalogo/images/candado-bronce-40mm.png',
+            ),
+            (
+                'Martillo de carpintero 16 oz',
+                'catalogo/images/martillo-carpintero-16oz.png',
+            ),
+            (
+                'Casco de seguridad blanco',
+                'catalogo/images/casco-seguridad-blanco.png',
+            ),
+            (
+                'Cemento corriente 25 kg',
+                'catalogo/images/cemento-corriente-25kg.png',
+            ),
+            (
+                'Cinta aisladora negra 20 metros',
+                'catalogo/images/cinta-aisladora-negra-20m.png',
+            ),
+            (
+                'Cinta métrica 5 metros',
+                'catalogo/images/cinta-metrica-5m.png',
+            ),
+            (
+                'Manguera jardín reforzada 15 metros',
+                'catalogo/images/manguera-jardin-reforzada-15m.png',
+            ),
+            (
+                'Llave ajustable 10 pulgadas',
+                'catalogo/images/llave-ajustable-10-pulgadas.png',
+            ),
+            (
+                'Lijadora orbital 240 W',
+                'catalogo/images/lijadora-orbital-240w.png',
+            ),
+            (
+                'Lija para madera grano 120, paquete',
+                'catalogo/images/lija-madera-grano-120-paquete.png',
+            ),
+            (
+                'Lentes de seguridad transparentes',
+                'catalogo/images/lentes-seguridad-transparentes.png',
+            ),
+            (
+                'Interruptor simple embutido',
+                'catalogo/images/interruptor-simple-embutido.png',
+            ),
+            (
+                'Guantes de cabritilla reforzados',
+                'catalogo/images/guantes-cabritilla-reforzados.png',
+            ),
+            (
+                'Clavo corriente 2 pulgadas, kilo',
+                'catalogo/images/clavo-corriente-2-pulgadas-kilo.png',
+            ),
+            (
+                'Esmalte al agua azul 1 galón',
+                'catalogo/images/esmalte-agua-azul-1-galon.png',
+            ),
+            (
+                'Esmeril angular 4 1/2 pulgadas',
+                'catalogo/images/esmeril-angular-4-1-2-pulgadas.png',
+            ),
+            (
+                'Formón para madera 25 mm',
+                'catalogo/images/formon-madera-25mm.png',
+            ),
+        )
+        for nombre, imagen in productos:
+            producto = Producto.objects.create(
+                nombre=nombre,
+                categoria='Electricidad',
+                precio=8990,
+                stock=10,
+            )
+            respuesta = self.client.get(
+                reverse('detalle_producto', args=[producto.pk]),
+            )
+            self.assertContains(respuesta, imagen)
+
     def test_invitado_puede_explorar_tarjetas_sin_comprar(self):
         response = self.client.get(reverse('catalogo'))
 
-        self.assertContains(response, 'Explora el catálogo')
+        self.assertContains(response, 'Todo lo que tu proyecto necesita')
         self.assertContains(response, 'Iniciar sesión para comprar')
         self.assertContains(response, 'catalogo/images/productos.svg#manuales')
         self.assertNotContains(response, 'name="cantidad"')
         self.assertContains(
             response,
             reverse('detalle_producto', args=[self.producto.pk]),
+        )
+        self.assertNotContains(response, 'Acceso administrador')
+        self.assertNotContains(
+            response,
+            reverse('reporte_resumen_categorias'),
+        )
+        self.assertNotContains(
+            response,
+            reverse('reporte_stock_critico'),
         )
 
         respuesta_compra = self.client.post(
@@ -51,6 +246,29 @@ class CatalogoTests(TestCase):
         self.producto.refresh_from_db()
         self.assertEqual(self.producto.stock, 12)
 
+    def test_staff_ve_agregar_unidades_en_catalogo_y_accesos_en_footer(self):
+        usuario = get_user_model().objects.create_user(
+            username='gestor_navbar',
+            password='clave-temporal-de-prueba',
+            is_staff=True,
+        )
+        self.client.force_login(usuario)
+
+        respuesta = self.client.get(reverse('catalogo'))
+
+        self.assertContains(respuesta, 'Agregar unidades')
+        self.assertContains(respuesta, 'Agregar producto')
+        self.assertContains(respuesta, 'Administración')
+        self.assertContains(
+            respuesta,
+            reverse('reporte_resumen_categorias'),
+        )
+        self.assertContains(
+            respuesta,
+            reverse('reporte_stock_critico'),
+        )
+        self.assertNotContains(respuesta, 'Acceso administrador')
+
     def test_cliente_autenticado_puede_comprar_desde_tarjeta(self):
         usuario = get_user_model().objects.create_user(
             username='cliente_catalogo',
@@ -60,18 +278,29 @@ class CatalogoTests(TestCase):
 
         response = self.client.get(reverse('catalogo'))
 
-        self.assertContains(response, 'Encuentra lo que necesitas')
+        self.assertContains(response, 'Todo lo que tu proyecto necesita')
+        self.assertContains(response, 'Ya iniciaste sesión')
         self.assertContains(response, 'name="cantidad"')
         self.assertContains(
             response,
-            reverse('comprar_producto', args=[self.producto.pk]),
+            reverse('carrito_agregar', args=[self.producto.pk]),
         )
 
-    def test_inicio_ofrece_consultar_o_comprar(self):
+    def test_inicio_muestra_catalogo_sin_pantalla_de_opciones(self):
         response = self.client.get(reverse('inicio'))
-        self.assertContains(response, 'Enviar una consulta')
-        self.assertContains(response, 'Continuar como invitado')
-        self.assertTemplateUsed(response, 'catalogo/inicio.html')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.producto.nombre)
+        self.assertContains(response, 'Todo lo que tu proyecto necesita')
+        self.assertContains(response, 'inicia sesión')
+        self.assertContains(response, 'No solicitamos datos de pago')
+        self.assertContains(response, 'Términos y condiciones')
+        self.assertContains(response, 'Nuestra empresa')
+        self.assertContains(response, 'Servicio al cliente')
+        self.assertNotContains(response, 'Continuar como invitado')
+        self.assertNotContains(response, '¿Qué necesitas hacer hoy?')
+        self.assertNotContains(response, 'Hora de Santiago')
+        self.assertTemplateUsed(response, 'catalogo/catalogo.html')
 
     def test_busqueda_filtro_y_detalle_producto(self):
         respuesta = self.client.get(reverse('catalogo'), {'q': 'Martillo'})
@@ -192,7 +421,6 @@ class CatalogoTests(TestCase):
         self.assertEqual(manuales['cantidad'], 2)
         self.assertEqual(manuales['precio_promedio'], 7995)
         self.assertEqual(manuales['stock_total'], 20)
-        self.assertContains(respuesta, 'Resumen por categorÃ­a')
 
     def test_reporte_stock_critico_filtra_y_ordena_con_orm(self):
         Producto.objects.create(
@@ -391,14 +619,63 @@ class CatalogoTests(TestCase):
             self.producto.pk,
         )
 
-    def test_consulta_exige_iniciar_sesion(self):
+    def test_visitante_puede_abrir_contacto(self):
         respuesta = self.client.get(reverse('consulta'))
 
-        self.assertRedirects(
-            respuesta,
-            f'{reverse("iniciar_sesion")}?next={reverse("consulta")}',
-        )
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertContains(respuesta, 'Todavía necesitas ayuda')
+        self.assertContains(respuesta, 'Contáctanos')
         self.assertEqual(ConsultaCliente.objects.count(), 0)
+
+    def test_carrito_agrega_y_paga_productos(self):
+        usuario = get_user_model().objects.create_user(
+            username='cliente_carrito',
+            password='clave-temporal-de-prueba',
+        )
+        respuesta = self.client.post(
+            reverse('carrito_agregar', args=[self.producto.pk]),
+            {'cantidad': 2, 'next': reverse('carrito')},
+        )
+        self.assertRedirects(respuesta, reverse('carrito'))
+        self.producto.refresh_from_db()
+        self.assertEqual(self.producto.stock, 10)
+        carrito = self.client.get(reverse('carrito'))
+        self.assertContains(carrito, 'Mi carro de supermercado')
+        self.assertContains(carrito, '$11980 CLP')
+        self.assertContains(carrito, 'Iniciar sesión para pagar')
+
+        self.client.force_login(usuario)
+        respuesta = self.client.post(reverse('carrito_pagar'))
+        self.assertRedirects(respuesta, reverse('historial'))
+        self.assertEqual(Compra.objects.get(usuario=usuario).cantidad, 2)
+        self.producto.refresh_from_db()
+        self.assertEqual(self.producto.stock, 10)
+        self.assertEqual(self.client.session.get('carrito'), {})
+
+    def test_quitar_del_carrito_devuelve_stock_reservado(self):
+        self.client.post(
+            reverse('carrito_agregar', args=[self.producto.pk]),
+            {'cantidad': 3},
+        )
+        self.producto.refresh_from_db()
+        self.assertEqual(self.producto.stock, 9)
+
+        respuesta = self.client.post(
+            reverse('carrito_eliminar', args=[self.producto.pk]),
+        )
+        self.assertRedirects(respuesta, reverse('carrito'))
+        self.producto.refresh_from_db()
+        self.assertEqual(self.producto.stock, 12)
+
+    def test_paginas_de_ayuda_y_terminos_son_accesibles(self):
+        ayuda = self.client.get(reverse('ayuda'))
+        terminos = self.client.get(reverse('terminos'))
+        self.assertEqual(ayuda.status_code, 200)
+        self.assertContains(ayuda, 'Preguntas frecuentes')
+        self.assertContains(ayuda, '¿Cómo agrego un producto al carro?')
+        self.assertEqual(terminos.status_code, 200)
+        self.assertContains(terminos, 'Términos y condiciones')
+        self.assertContains(terminos, 'Carro y reserva de stock')
 
     def test_cerrar_sesion_redirige_al_inicio(self):
         usuario = get_user_model().objects.create_user(
@@ -406,6 +683,14 @@ class CatalogoTests(TestCase):
             password='clave-temporal-de-prueba',
         )
         self.client.force_login(usuario)
+
+        cuenta = self.client.get(reverse('historial'))
+        self.assertContains(cuenta, 'PERFIL')
+        self.assertContains(cuenta, 'cliente_cierre')
+        self.assertContains(cuenta, 'Mi historial')
+        self.assertContains(cuenta, 'Cerrar sesión')
+        self.assertContains(cuenta, 'name="csrfmiddlewaretoken"', html=False)
+        self.assertContains(cuenta, 'Configuración')
 
         respuesta = self.client.post(reverse('cerrar_sesion'))
 
@@ -437,6 +722,7 @@ class CatalogoTests(TestCase):
         )
         respuesta = self.client.get(reverse('catalogo'))
         self.assertContains(respuesta, '#123456')
+        self.assertContains(respuesta, 'tema-administrador')
 
     def test_compra_demo_descuenta_stock_y_guarda_historial_y_aviso(self):
         usuario = get_user_model().objects.create_user(

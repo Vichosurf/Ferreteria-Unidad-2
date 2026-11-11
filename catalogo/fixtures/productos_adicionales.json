@@ -1,0 +1,7 @@
+[
+  {"model": "catalogo.producto", "pk": 41, "fields": {"nombre": "Llave de impacto inalámbrica 20 V", "categoria": "Herramientas eléctricas", "precio": 89990, "stock": 5}},
+  {"model": "catalogo.producto", "pk": 42, "fields": {"nombre": "Set de brocas para madera 8 piezas", "categoria": "Herramientas eléctricas", "precio": 7990, "stock": 16}},
+  {"model": "catalogo.producto", "pk": 43, "fields": {"nombre": "Tornillos autoperforantes zincados paquete de 100", "categoria": "Fijaciones", "precio": 5490, "stock": 24}},
+  {"model": "catalogo.producto", "pk": 44, "fields": {"nombre": "Sellador acrílico blanco 300 ml", "categoria": "Pinturas", "precio": 3990, "stock": 18}},
+  {"model": "catalogo.producto", "pk": 45, "fields": {"nombre": "Extensión eléctrica reforzada 10 m", "categoria": "Electricidad", "precio": 12990, "stock": 11}}
+]
