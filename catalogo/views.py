@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models.deletion import ProtectedError
 from django.db import transaction
-from django.db.models import Count, F, Q, Sum
+from django.db.models import Avg, Count, F, Q, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView
@@ -46,6 +46,36 @@ def catalogo(request):
             'categorias': Producto.CATEGORIAS,
             'resumen': resumen,
         },
+    )
+
+
+def reporte_resumen_categorias(request):
+    resumenes = (
+        Producto.objects.values('categoria')
+        .annotate(
+            cantidad=Count('pk'),
+            precio_promedio=Avg('precio'),
+            stock_total=Sum('stock'),
+        )
+        .order_by('categoria')
+    )
+    return render(
+        request,
+        'catalogo/reporte_resumen_categorias.html',
+        {'resumenes': resumenes},
+    )
+
+
+def reporte_stock_critico(request):
+    umbral = 5
+    productos = Producto.objects.filter(stock__lte=umbral).order_by(
+        'stock',
+        'nombre',
+    )
+    return render(
+        request,
+        'catalogo/reporte_stock_critico.html',
+        {'productos': productos, 'umbral': umbral},
     )
 
 

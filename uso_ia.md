@@ -59,3 +59,9 @@ Para la etapa 0 instalé las dependencias, ejecuté las migraciones y cargué la
 Verifiqué con una prueba y una solicitud a la portada que los productos se muestran desde SQLite.
 Implementé el alta, edición y eliminación con confirmación desde las páginas del catálogo.
 Las vistas guardan los cambios en la base de datos y redirigen al listado principal.
+
+### 7. Reportes con ORM
+
+- **Prompt:** “Crea dos reportes Django para el catálogo: un resumen agrupado por categoría con cantidad, precio promedio y stock total; y un listado de productos con stock crítico filtrado y ordenado con el ORM. Agrega templates y enlaces de navegación.”
+- **Resumen de la respuesta:** Se implementaron dos vistas con `values`, `annotate`, `Count`, `Avg`, `Sum`, `filter` y `order_by`, además de sus templates y rutas.
+- **Qué usé o modifiqué antes de integrarlo:** Adapté los reportes a los campos existentes de `Producto`. El primer reporte agrupa por categoría y el segundo considera stock crítico de hasta 5 unidades. Agregué pruebas para verificar los cálculos, el filtro y el ordenamiento desde la base de datos.

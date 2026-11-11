@@ -1,0 +1,38 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Resumen por categorÃ­a | FerreterÃ­a{% endblock %}
+
+{% block content %}
+<section class="catalogo-hero">
+    <div>
+        <p class="texto-etiqueta">REPORTE ORM</p>
+        <h2>Resumen del catÃ¡logo por categorÃ­a</h2>
+        <p>Cantidad de productos, precio promedio y stock total calculados desde la base de datos.</p>
+    </div>
+</section>
+
+<div class="tabla-contenedor">
+    <table>
+        <thead>
+            <tr>
+                <th>CategorÃ­a</th>
+                <th>Cantidad de productos</th>
+                <th>Precio promedio</th>
+                <th>Stock total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for resumen in resumenes %}
+            <tr>
+                <td>{{ resumen.categoria }}</td>
+                <td>{{ resumen.cantidad }}</td>
+                <td class="precio">${{ resumen.precio_promedio|floatformat:0 }} CLP</td>
+                <td>{{ resumen.stock_total }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" class="vacio">No hay productos para resumir.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

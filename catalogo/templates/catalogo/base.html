@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="{% if idioma_actual == 'en' %}en{% else %}es{% endif %}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Ferretería{% endblock %}</title>
+    <style>
+        :root { font-family: system-ui, sans-serif; color: #202a35; background: {{ configuracion.color_fondo|default:'#f3f5f7' }}; }
+        body { display: flex; flex-direction: column; margin: 0; min-height: 100vh; }
+        .encabezado { padding: .9rem max(1.25rem, calc((100% - 1160px) / 2)); background: #183b56; color: white; box-shadow: 0 3px 14px #152b3b20; }
+        .encabezado-contenido { display: flex; max-width: 1160px; margin: 0 auto; align-items: center; justify-content: space-between; gap: 1.5rem; }
+        .marca { display: inline-flex; flex: 0 0 auto; align-items: center; gap: .7rem; color: white; text-decoration: none; }
+        .marca-icono { display: grid; width: 2.6rem; height: 2.6rem; place-items: center; border-radius: .7rem; background: #d96827; color: white; font-size: 1.25rem; font-weight: 800; }
+        .marca strong, .marca small { display: block; }
+        .marca strong { font-size: 1.05rem; letter-spacing: -.02em; }
+        .marca small { margin-top: .12rem; color: #d7e4ee; font-size: .75rem; }
+        nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: .35rem; }
+        nav a, nav button { color: white; font: inherit; }
+        nav a { padding: .5rem .65rem; text-decoration: none; border-radius: .4rem; }
+        nav a:hover, nav a:focus-visible { background: #ffffff1f; }
+        nav form { margin: 0; }
+        nav button { border: 1px solid #ffffff80; border-radius: .4rem; padding: .5rem .7rem; background: transparent; cursor: pointer; }
+        .sesion { padding: .4rem .55rem; color: #d7e4ee; font-size: .9rem; }
+        main { max-width: 1160px; margin: 2rem auto 3rem; padding: 0 1.25rem; }
+        body > main { box-sizing: border-box; width: 100%; flex: 1; }
+        a { color: #135b83; }
+        .panel { max-width: 620px; margin: 0 auto; padding: 1.5rem; border-radius: .65rem; background: white; box-shadow: 0 2px 12px #152b3b12; }
+        .panel form p { display: grid; gap: .35rem; margin: 1rem 0; }
+        input, select, textarea { box-sizing: border-box; width: 100%; padding: .65rem; border: 1px solid #aab6c0; border-radius: .35rem; font: inherit; }
+        input[type=submit], button[type=submit] { width: auto; padding: .65rem 1rem; border: 0; border-radius: .35rem; background: #183b56; color: white; font: inherit; cursor: pointer; }
+        .catalogo-hero { display: flex; justify-content: space-between; align-items: end; gap: 1rem; margin-bottom: 1.25rem; }
+        .catalogo-hero h2 { margin: 0 0 .4rem; color: #183b56; font-size: clamp(1.7rem, 4vw, 2.5rem); }
+        .catalogo-hero p { margin: 0; color: #526170; }
+        .catalogo-hero .texto-etiqueta { margin-bottom: .45rem; color: #b04d1b; font-size: .75rem; font-weight: 800; letter-spacing: .12em; }
+        .aviso-demo { display: flex; align-items: flex-start; gap: .8rem; margin: 1.25rem 0; padding: 1rem 1.1rem; border: 1px solid #f0d7bc; border-radius: .65rem; background: #fff8f0; color: #514133; }
+        .aviso-demo p { margin: 0; line-height: 1.6; }
+        .aviso-demo a { color: #8b3c18; font-weight: 700; }
+        .aviso-demo-icono { display: grid; flex: 0 0 1.5rem; width: 1.5rem; height: 1.5rem; place-items: center; border-radius: 50%; background: #d96827; color: white; font-weight: 800; }
+        .resumen-tarjetas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 1.25rem 0; }
+        .tarjeta-resumen { padding: 1rem 1.15rem; border: 1px solid #e2e9ee; border-radius: .7rem; background: #ffffffd9; }
+        .tarjeta-resumen strong { display: block; color: #183b56; font-size: 1.65rem; }
+        .tarjeta-resumen span { color: #526170; font-size: .9rem; }
+        .filtros { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(180px, .6fr) auto auto; align-items: end; gap: .75rem; margin: 1.5rem 0 1rem; }
+        .filtros label { display: grid; gap: .35rem; color: #34495a; font-size: .9rem; font-weight: 600; }
+        .boton { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; box-sizing: border-box; padding: .6rem .95rem; border: 0; border-radius: .4rem; background: #e5edf2; color: #183b56; font: inherit; font-weight: 650; text-decoration: none; cursor: pointer; }
+        .boton-principal { background: #d96827; color: white; }
+        .boton:hover { filter: brightness(.96); }
+        .tabla-contenedor { overflow: hidden; background: white; border: 1px solid #e1e8ed; border-radius: .7rem; box-shadow: 0 5px 20px #152b3b12; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: .9rem 1rem; border-bottom: 1px solid #e7ebef; }
+        th { background: #eaf0f4; color: #34495a; font-size: .83rem; letter-spacing: .04em; text-transform: uppercase; }
+        tbody tr:hover { background: #f8fafb; }
+        tbody tr.sin-stock { background: #fff7f2; }
+        tbody tr:last-child td { border-bottom: 0; }
+        .precio { white-space: nowrap; color: #183b56; font-weight: 700; }
+        .producto-link { color: #183b56; font-weight: 650; text-decoration: none; }
+        .producto-link:hover { text-decoration: underline; }
+        .estado { display: inline-block; padding: .22rem .55rem; border-radius: 99px; background: #e4f4e9; color: #21653b; font-size: .82rem; font-weight: 650; white-space: nowrap; }
+        .estado-agotado { background: #ffeadf; color: #9c3c16; }
+        .vacio { padding: 2rem; text-align: center; }
+        .mensajes { max-width: 1100px; margin: 1rem auto; padding: 0 1.25rem; }
+        .errorlist { color: #9b1c1c; }
+        .site-footer { padding: 2.25rem max(1.25rem, calc((100% - 1160px) / 2)) 1.25rem; background: #132f45; color: #d7e4ee; font-size: .9rem; }
+        .footer-contenido { display: grid; max-width: 1160px; margin: 0 auto; grid-template-columns: 1.1fr 1fr 1.4fr; gap: 2rem; }
+        .footer-columna h2 { margin: 0 0 .8rem; color: white; font-size: 1rem; }
+        .footer-columna p { margin: .45rem 0; line-height: 1.55; }
+        .footer-columna a { color: #e6edf3; text-decoration: none; }
+        .footer-columna a:hover, .footer-columna a:focus-visible { color: white; text-decoration: underline; }
+        .footer-links { display: grid; grid-template-columns: 1fr 1fr; align-content: start; gap: .55rem 1rem; }
+        .footer-links h2 { grid-column: 1 / -1; }
+        .footer-final { max-width: 1160px; margin: 1.5rem auto 0; padding-top: 1rem; border-top: 1px solid #ffffff26; color: #bdc9d4; font-size: .82rem; }
+        .footer-final a { color: inherit; }
+        .footer-empresa { display: flex; align-items: flex-start; gap: .7rem; }
+        .footer-empresa .marca-icono { flex: 0 0 2.6rem; }
+        .nota-demo { color: #526170; font-size: .9rem; }
+        .form-compra { display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+        .form-compra input { width: 6rem; }
+        .boton-compra { background: #26734d; color: white; }
+        .productos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 245px), 1fr)); gap: 1.15rem; align-items: stretch; }
+        .producto-card { overflow: hidden; display: flex; flex-direction: column; min-width: 0; border: 1px solid #e1e8ed; border-radius: .8rem; background: white; box-shadow: 0 5px 20px #152b3b12; transition: transform .18s ease, box-shadow .18s ease; }
+        .producto-card:hover { transform: translateY(-3px); box-shadow: 0 10px 26px #152b3b1c; }
+        .producto-imagen-enlace { position: relative; display: block; overflow: hidden; background: #eaf0f4; }
+        .producto-imagen { display: block; width: 100%; height: auto; aspect-ratio: 1.52; }
+        .etiqueta-agotado { position: absolute; top: .75rem; right: .75rem; padding: .3rem .65rem; border-radius: 99px; background: #fff; color: #9c3c16; font-size: .8rem; font-weight: 700; box-shadow: 0 2px 8px #152b3b20; }
+        .producto-card-contenido { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding: 1rem; }
+        .producto-categoria { margin: 0 0 .35rem; color: #607284; font-size: .78rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+        .producto-card h3 { margin: 0; min-height: 2.8em; color: #183b56; font-size: 1.05rem; line-height: 1.4; }
+        .producto-card h3 a { color: inherit; text-decoration: none; }
+        .producto-card h3 a:hover { text-decoration: underline; }
+        .producto-precio { margin: .55rem 0 .25rem; color: #183b56; font-size: 1.45rem; font-weight: 800; }
+        .producto-precio span { color: #607284; font-size: .7rem; font-weight: 650; }
+        .producto-stock { margin: 0 0 .85rem; color: #26734d; font-size: .87rem; font-weight: 650; }
+        .producto-stock.sin-unidades { color: #9c3c16; }
+        .tarjeta-form-compra { width: 100%; margin-top: auto; }
+        .tarjeta-form-compra label { color: #526170; font-size: .85rem; }
+        .tarjeta-form-compra input { width: 4.8rem; }
+        .tarjeta-form-compra .boton { flex: 1; }
+        .producto-card-contenido > .boton { width: 100%; margin-top: auto; }
+        .enlace-consulta-producto { margin-top: .75rem; font-size: .88rem; }
+        .boton-deshabilitado { width: 100%; margin-top: auto; background: #e5edf2; color: #607284; cursor: not-allowed; }
+        .productos-vacios { grid-column: 1 / -1; padding: 2rem; border: 1px dashed #aab6c0; border-radius: .7rem; color: #526170; text-align: center; }
+        .producto-detalle { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr); overflow: hidden; max-width: 980px; margin: 0 auto; border: 1px solid #e1e8ed; border-radius: .9rem; background: white; box-shadow: 0 8px 28px #152b3b14; }
+        .producto-detalle-imagen { align-self: center; background: #eaf0f4; }
+        .producto-detalle-imagen .producto-imagen { width: 100%; height: 100%; min-height: 340px; aspect-ratio: auto; }
+        .producto-detalle-contenido { padding: clamp(1.25rem, 4vw, 2.5rem); }
+        .producto-detalle-contenido h2 { margin: 0 0 .65rem; color: #183b56; font-size: clamp(1.6rem, 4vw, 2.25rem); }
+        .producto-detalle-contenido > .boton { margin-top: .5rem; }
+        .producto-detalle-contenido .form-compra { align-items: end; }
+        .seccion-historial { margin-top: 1.5rem; }
+        .estado-no-leido { font-weight: 700; }
+        body.tema-oscuro { background: #17212b; color: #e6edf3; }
+        body.tema-oscuro main { color: #e6edf3; }
+        body.tema-oscuro .panel, body.tema-oscuro .tarjeta-resumen, body.tema-oscuro .tabla-contenedor, body.tema-oscuro .producto-card, body.tema-oscuro .producto-detalle { background: #253341; border-color: #405366; color: #e6edf3; }
+        body.tema-oscuro .catalogo-hero h2, body.tema-oscuro .producto-link, body.tema-oscuro .precio, body.tema-oscuro .tarjeta-resumen strong { color: #e6edf3; }
+        body.tema-oscuro .producto-card h3, body.tema-oscuro .producto-detalle-contenido h2, body.tema-oscuro .producto-precio { color: #e6edf3; }
+        body.tema-oscuro .producto-categoria, body.tema-oscuro .producto-precio span, body.tema-oscuro .tarjeta-form-compra label { color: #bdc9d4; }
+        body.tema-oscuro .catalogo-hero p, body.tema-oscuro .tarjeta-resumen span, body.tema-oscuro .nota-demo, body.tema-oscuro .resumen { color: #bdc9d4; }
+        body.tema-oscuro .aviso-demo { border-color: #66503a; background: #352f27; color: #f0e2d0; }
+        body.tema-oscuro th { background: #314354; color: #e6edf3; }
+        body.tema-oscuro td { border-color: #405366; }
+        body.tema-oscuro tbody tr:hover { background: #314354; }
+        body.tema-oscuro input, body.tema-oscuro select, body.tema-oscuro textarea { background: #17212b; color: #e6edf3; border-color: #607487; }
+        body.tema-oscuro .filtros label { color: #d7e4ee; }
+        @media (max-width: 760px) { .encabezado-contenido { align-items: flex-start; flex-direction: column; gap: .75rem; } nav { justify-content: flex-start; } .filtros { grid-template-columns: 1fr 1fr; } .catalogo-hero { align-items: start; flex-direction: column; } .producto-detalle { grid-template-columns: 1fr; } .producto-detalle-imagen .producto-imagen { min-height: 0; } .footer-contenido { grid-template-columns: 1fr 1fr; } .footer-columna:last-child { grid-column: 1 / -1; } }
+        @media (max-width: 540px) { .resumen-tarjetas { grid-template-columns: 1fr; gap: .6rem; } .tarjeta-resumen { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; } .tarjeta-resumen strong { font-size: 1.25rem; } .filtros { grid-template-columns: 1fr; } th, td { padding: .7rem .55rem; } .footer-contenido { grid-template-columns: 1fr; gap: 1.4rem; } .footer-columna:last-child { grid-column: auto; } }
+    </style>
+</head>
+<body class="{% if tema_actual == 'dark' %}tema-oscuro{% endif %}">
+    <header class="encabezado">
+        <div class="encabezado-contenido">
+        <a class="marca" href="{% url 'inicio' %}">
+            <span class="marca-icono" aria-hidden="true">F</span>
+            <span><strong>Ferretería</strong><small>Todo para tu proyecto</small></span>
+        </a>
+        <nav aria-label="Navegación principal">
+            <a href="{% url 'catalogo' %}">Productos</a>
+            <a href="{% url 'reporte_resumen_categorias' %}">Resumen por categorÃ­a</a>
+            <a href="{% url 'reporte_stock_critico' %}">Stock crÃ­tico</a>
+            <a href="#contacto">Contacto</a>
+            <a href="#ayuda">Ayuda</a>
+            <a href="{% url 'configuracion' %}">Configuración</a>
+            {% if user.is_authenticated %}
+                <span class="sesion">Hola, {{ user.username }}</span>
+                <a href="{% url 'historial' %}">Mi cuenta</a>
+                <a href="{% url 'notificaciones' %}">Avisos{% if avisos_pendientes %} ({{ avisos_pendientes }}){% endif %}</a>
+                {% if user.is_staff %}<a href="{% url 'admin:index' %}">Administración</a>{% endif %}
+                <form method="post" action="{% url 'cerrar_sesion' %}">
+                    {% csrf_token %}
+                    <button type="submit">Cerrar sesión</button>
+                </form>
+            {% else %}
+                <a href="{% url 'iniciar_sesion' %}">Iniciar sesión</a>
+                <a href="{% url 'registro' %}">Crear cuenta</a>
+            {% endif %}
+            <a href="{% url 'configuracion' %}">Configuración</a>
+            <a href="{% url 'admin:index' %}">Acceso administrador</a>
+        </nav>
+        </div>
+    </header>
+    {% if messages %}
+    <div class="mensajes" role="status">
+        {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+    </div>
+    {% endif %}
+    <main>{% block content %}{% endblock %}</main>
+    <footer class="site-footer">
+        <div class="footer-contenido">
+            <section class="footer-columna footer-empresa" id="empresa">
+                <span class="marca-icono" aria-hidden="true">F</span>
+                <div>
+                    <h2>Nuestra empresa</h2>
+                    <p>Un catálogo de ferretería para encontrar lo que necesitas para cada proyecto.</p>
+                </div>
+            </section>
+            <nav class="footer-columna footer-links" aria-label="Enlaces del pie de página">
+                <h2>Enlaces útiles</h2>
+                <a href="#contacto">Contacto</a>
+                <a href="#ayuda">Ayuda</a>
+                <a href="{% url 'configuracion' %}">Configuración</a>
+                <a href="#terminos">Términos y condiciones</a>
+                <a href="#empresa">Nuestra empresa</a>
+                <a href="#servicio-cliente">Servicio al cliente</a>
+            </nav>
+            <div class="footer-columna">
+                <p id="contacto"><strong>Contacto:</strong> <a href="{% url 'consulta' %}">envíanos una consulta</a> sobre productos o disponibilidad.</p>
+                <p id="ayuda"><strong>Ayuda:</strong> busca por nombre o filtra el catálogo por categoría.</p>
+                <p id="servicio-cliente"><strong>Servicio al cliente:</strong> <a href="{% url 'consulta' %}">solicita asistencia</a> con tu cuenta.</p>
+                <p id="terminos"><strong>Términos y condiciones:</strong> las compras y pagos de este sitio son simulados; no se realizan cobros.</p>
+            </div>
+        </div>
+        <div class="footer-final">Catálogo de Ferretería · <a href="{% url 'admin:index' %}">Acceso al administrador Django</a></div>
+    </footer>
+    <script src="{% static 'catalogo/js/site.js' %}?v=5" defer></script>
+</body>
+</html>

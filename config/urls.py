@@ -43,6 +43,16 @@ urlpatterns = [
     path('', views.inicio, name='inicio'),
     path('comprar/', views.catalogo, name='catalogo'),
     path(
+        'reportes/resumen-categorias/',
+        views.reporte_resumen_categorias,
+        name='reporte_resumen_categorias',
+    ),
+    path(
+        'reportes/stock-critico/',
+        views.reporte_stock_critico,
+        name='reporte_stock_critico',
+    ),
+    path(
         'productos/<int:producto_id>/comprar/',
         views.comprar_producto,
         name='comprar_producto',

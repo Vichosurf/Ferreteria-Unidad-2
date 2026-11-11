@@ -96,6 +96,51 @@ class CatalogoTests(TestCase):
             404,
         )
 
+    def test_reporte_resumen_agrupa_y_calcula_con_orm(self):
+        Producto.objects.create(
+            nombre='Alicate adicional',
+            categoria='Herramientas manuales',
+            precio=10000,
+            stock=8,
+        )
+
+        respuesta = self.client.get(reverse('reporte_resumen_categorias'))
+
+        self.assertEqual(respuesta.status_code, 200)
+        manuales = next(
+            item for item in respuesta.context['resumenes']
+            if item['categoria'] == 'Herramientas manuales'
+        )
+        self.assertEqual(manuales['cantidad'], 2)
+        self.assertEqual(manuales['precio_promedio'], 7995)
+        self.assertEqual(manuales['stock_total'], 20)
+        self.assertContains(respuesta, 'Resumen por categorÃ­a')
+
+    def test_reporte_stock_critico_filtra_y_ordena_con_orm(self):
+        Producto.objects.create(
+            nombre='Producto crÃ­tico',
+            categoria='Electricidad',
+            precio=3500,
+            stock=3,
+        )
+        Producto.objects.create(
+            nombre='Producto sobre umbral',
+            categoria='Electricidad',
+            precio=3500,
+            stock=6,
+        )
+
+        respuesta = self.client.get(reverse('reporte_stock_critico'))
+
+        self.assertEqual(respuesta.status_code, 200)
+        productos = list(respuesta.context['productos'])
+        self.assertEqual(
+            [producto.nombre for producto in productos],
+            ['Pintura agotada', 'Producto crÃ­tico'],
+        )
+        self.assertNotContains(respuesta, 'Producto sobre umbral')
+        self.assertContains(respuesta, '5 unidades o menos')
+
     def test_staff_crea_edita_y_elimina_producto_desde_el_catalogo(self):
         usuario = get_user_model().objects.create_user(
             username='gestor_catalogo',
