@@ -46,13 +46,20 @@ en el navegador.
 
 ## Funcionalidades
 
-- El catálogo está disponible en `/comprar/`. Se puede explorar como invitado,
-  buscar productos, filtrar por categoría y abrir el detalle de cada producto.
-- Las personas pueden crear una cuenta e iniciar o cerrar sesión. La portada
-  ofrece acceso al catálogo y a la consulta de productos.
+- La portada (`/`) muestra directamente el catálogo, que también está
+  disponible en `/comprar/`. Se puede explorar como invitado, buscar productos,
+  filtrar por categoría y abrir el detalle de cada producto.
+- El personal autorizado puede crear, editar y eliminar productos desde el
+  catálogo. Para evitar cambios no autorizados, estas acciones requieren una
+  cuenta marcada como personal; eliminar un producto con compras asociadas no
+  está permitido.
+- Las personas pueden crear una cuenta e iniciar o cerrar sesión. No hace falta
+  iniciar sesión para explorar; sí se requiere para registrar una compra de
+  demostración.
 - Para registrar una compra de demostración hay que iniciar sesión o crear una
-  cuenta. No se procesa ningún pago; una compra válida descuenta unidades del
-  stock y se guarda en el historial del usuario.
+  cuenta. No se solicitan datos de pago ni se procesa ningún cobro; una compra
+  válida es simulada, descuenta unidades del stock y se guarda en el historial
+  del usuario.
 - El formulario de consultas se encuentra en `/consultas/nueva/` y requiere
   iniciar sesión. El usuario puede revisar sus compras y notificaciones desde
   las páginas de su cuenta.
@@ -60,7 +67,9 @@ en el navegador.
   compras y notificaciones. La configuración del sitio permite cambiar el color
   de fondo.
 - Las preferencias de idioma, tema y notificaciones se guardan en la sesión del
-  navegador. El reloj se muestra según la zona horaria de Santiago.
+  navegador. La navegación y el pie de página incluyen accesos a contacto,
+  ayuda, configuración, términos y condiciones, información de la empresa y
+  servicio al cliente.
 
 El superusuario es local a cada instalación. Créalo con
 `python manage.py createsuperuser`; no se incluyen credenciales en el repositorio.

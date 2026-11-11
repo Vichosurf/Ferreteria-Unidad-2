@@ -1,0 +1,15 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Eliminar producto | Ferretería{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <h2>Confirmar eliminación</h2>
+    <p>¿Seguro que deseas eliminar el producto <strong>{{ object.nombre }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button class="boton boton-principal" type="submit">Sí, eliminar</button>
+        <a class="boton" href="{% url 'catalogo' %}">Cancelar</a>
+    </form>
+</section>
+{% endblock %}

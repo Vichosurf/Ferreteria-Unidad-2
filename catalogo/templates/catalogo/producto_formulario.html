@@ -1,0 +1,15 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}{{ titulo }} | Ferretería{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <h2>{{ titulo }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="boton boton-principal" type="submit">Guardar producto</button>
+        <a class="boton" href="{% url 'catalogo' %}">Cancelar</a>
+    </form>
+</section>
+{% endblock %}

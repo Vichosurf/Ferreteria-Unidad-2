@@ -2,49 +2,60 @@
 
 ## Parte 1: Consultas, respuestas y ajustes
 
-Usé un asistente de IA como apoyo puntual durante el desarrollo. Revisé el código propuesto, lo adapté al proyecto y comprobé los cambios. El historial de GitHub conserva los commits de las etapas; este documento describe las consultas relevantes y el resultado que quedó en esta entrega.
 
-### 1. Modelo y base de datos
 
-- **Prompt:** “Continúa con la etapa 1” junto con la pauta que pide un modelo para la variante Ferretería, conexión a base de datos y migraciones.
-- **Resumen de la respuesta:** Se preparó el modelo `Producto` con nombre, categoría, precio y stock, además de una migración inicial.
-- **Ajustes y comprobación:** Se conservó el commit de la etapa 0 y se creó `etapa-1-modelo` como commit separado. Se verificaron las migraciones y la creación y lectura de un producto en SQLite temporal.
-
-### 2. Django Admin
-
-- **Prompt:** “Continúa con la etapa 2” y la pauta que solicita registrar el modelo, mostrar al menos tres campos y configurar búsqueda o filtro.
-- **Resumen de la respuesta:** Se añadió el registro de `Producto` en Django Admin con columnas, búsqueda y filtro por categoría.
-- **Ajustes y comprobación:** Se mantuvo intacta la etapa 1. En una base temporal se probaron el acceso al administrador y las acciones de alta, edición, búsqueda y eliminación.
-
-### 3. Fixture de productos
+### 1. Fixture de productos
 
 - **Prompt de poblamiento indicado en la pauta:** “Genera una fixture JSON de Django para el modelo `catalogo.Producto` con 40 productos de ferretería chilenos realistas. Campos: nombre, categoria, precio (int, 1000 a 150000), stock (int, 0 a 50). Formato: lista de objetos con model, pk y fields, lista para cargar con loaddata.”
 - **Resumen de la respuesta:** Se prepararon 40 registros en formato de fixture de Django, con nombres y categorías de ferretería.
 - **Ajustes y comprobación:** Se corrigió el precio del perno hexagonal a $1.890 para que respete el mínimo de $1.000 validado por el modelo. Se comprobó la cantidad, los rangos de precio y stock y la carga mediante `loaddata` en una base temporal y luego en la base local.
 
-### 4. Catálogo desde la base de datos
+### 2. Django Admin
 
-- **Prompt:** “Ahora la etapa 3, no cambies nada el commit etapa 2 ya que lo pusiste”, junto con el requisito de reemplazar la lista estática por una consulta ORM.
-- **Resumen de la respuesta:** Se conectó la página principal a los productos guardados y se creó una presentación en tarjetas.
-- **Ajustes y comprobación:** Se dejó la consulta en `catalogo/views.py`, la presentación en el template y la ruta principal en `config/urls.py`. Las tarjetas usan símbolos ilustrativos por categoría, no fotografías reales. La respuesta HTTP y los productos renderizados se comprobaron tras cargar la fixture.
+- **Prompt:** “Configura Django Admin para gestionar el modelo `Producto`, mostrando al menos tres campos y habilitando búsqueda o filtros.”
+- **Resumen de la respuesta:** Se registró `Producto` en el administrador con columnas para nombre, categoría, precio y stock, además de búsqueda y filtro por categoría.
+- **Qué usé o modifiqué antes de integrarlo:** Integré la configuración en `catalogo/admin.py` y comprobé el acceso al administrador y las acciones de crear, editar, buscar y eliminar productos con una base de datos temporal.
 
-### 5. Documentación de entrega
+### 3. Conexión de base de datos
 
-- **Prompt:** “Ahora entrega-final, no cambies el commit etapa 3 ni los anteriores”.
-- **Resumen de la respuesta:** Se prepararon esta guía de instalación y el registro de uso para acompañar el repositorio.
-- **Ajustes y comprobación:** La documentación describe solo lo que está presente en el código de esta entrega. No se añadieron credenciales al repositorio; cada usuario crea su propio superusuario con Django.
+- **Prompt:** “Configura la conexión de este proyecto Django a SQLite y comprueba que pueda guardar y consultar productos.”
+- **Resumen de la respuesta:** Se revisó la configuración de la base de datos de Django y se comprobó el acceso al modelo mediante el ORM.
+- **Qué usé o modifiqué antes de integrarlo:** Mantuve SQLite como base de datos en `config/settings.py`. Probé las migraciones y la creación y lectura de un producto con una base temporal para no depender de los datos locales.
+
+### 4. Configuración del proyecto
+
+- **Prompt:** “Configura Django para que la aplicación de catálogo y sus páginas funcionen con el idioma y la zona horaria de Chile.”
+- **Resumen de la respuesta:** Se revisaron los ajustes del proyecto relacionados con la aplicación, el idioma, la hora local y las páginas disponibles.
+- **Qué usé o modifiqué antes de integrarlo:** La aplicación quedó incluida en `INSTALLED_APPS`, el idioma se configuró como `es-cl` y la zona horaria como `America/Santiago` en `config/settings.py`. También verifiqué las rutas y páginas integradas con las comprobaciones y pruebas del proyecto.
+
+### 5. Preparación del entorno de la etapa 0
+
+- **Prompt:** “Instala dependencias, migra y carga el poblamiento; verifica que el listado se muestra desde la BD.”
+- **Resumen de la respuesta:** Se instalaron las dependencias de `requirements.txt`, se comprobaron las migraciones, se cargaron los 40 productos de la fixture y se verificó la portada mediante una prueba y una solicitud HTTP.
+- **Qué usé o modifiqué antes de integrarlo:** Usé el entorno virtual existente. La fixture quedó cargada en la base local; había además un producto previo, por lo que la consulta ORM devolvió 41 productos. La portada respondió HTTP 200 y mostró los 41 productos de la base de datos. La prueba `test_portada_muestra_productos_de_la_base_de_datos` pasó.
+
+### 6. CRUD web del catálogo
+
+- **Prompt:** “Implemente las operaciones desde el sitio: crear con formulario, editar y eliminar con confirmación; tras cada operación redirija al listado principal.”
+- **Resumen de la respuesta:** Se agregó un formulario basado en el modelo `Producto` y vistas para crear, editar y eliminar, accesibles desde el catálogo.
+- **Qué usé o modifiqué antes de integrarlo:** Restringí la gestión a personal autenticado; añadí confirmación antes de eliminar y un aviso cuando existen compras asociadas que impiden borrar el producto. Las operaciones correctas regresan al listado, donde el cambio se consulta desde la base de datos. Agregué pruebas para el flujo, los permisos y la restricción de borrado.
+
 
 ## Parte 2: Explicación del proceso
 
-Preparé el proyecto Django para trabajar con la variante de ferretería.
-Definí un producto con nombre, categoría, precio y stock.
-Configuré SQLite y generé la migración inicial del modelo.
-Registré el modelo en Django Admin para administrar el catálogo.
-Configuré columnas visibles, búsqueda y filtro por categoría.
-Preparé una fixture con 40 productos de ejemplo para poblar la base de datos.
-Revisé que los precios y las cantidades respetaran los rangos del modelo.
-Cargué la fixture con el comando de Django y verifiqué los registros.
-Conecté la página principal con una consulta al ORM.
-Organicé los productos en tarjetas con su categoría, precio y stock.
-Probé la carga y la página principal usando una base SQLite temporal.
-Finalmente documenté los comandos para instalar, iniciar y revisar el proyecto.
+Primero preparé el proyecto Django para el catálogo de una ferretería.
+Definí el producto con nombre, categoría, precio y stock, y comprobé sus migraciones.
+Configuré SQLite en los ajustes del proyecto para guardar los productos.
+Registré el modelo en Django Admin para poder gestionar el catálogo.
+Dejé visibles el nombre, la categoría, el precio y el stock de cada producto.
+También configuré la búsqueda y el filtro por categoría para encontrar productos.
+Preparé una fixture con 40 productos de ferretería en el formato que acepta Django.
+Revisé los campos, los precios y las cantidades antes de cargar los registros.
+Ajusté el precio del perno hexagonal para respetar el mínimo definido para los productos.
+Cargué la fixture con `loaddata` y comprobé que los productos aparecieran en la base de datos.
+Configuré el idioma del proyecto en español de Chile y la zona horaria de Santiago.
+Finalmente probé el administrador, la carga de datos y la consulta del catálogo desde la aplicación.
+Para la etapa 0 instalé las dependencias, ejecuté las migraciones y cargué la fixture.
+Verifiqué con una prueba y una solicitud a la portada que los productos se muestran desde SQLite.
+Implementé el alta, edición y eliminación con confirmación desde las páginas del catálogo.
+Las vistas guardan los cambios en la base de datos y redirigen al listado principal.
