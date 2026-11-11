@@ -1,0 +1,402 @@
+[
+  {
+    "model": "catalogo.producto",
+    "pk": 1,
+    "fields": {
+      "nombre": "Martillo de carpintero 16 oz",
+      "categoria": "Herramientas manuales",
+      "precio": 8990,
+      "stock": 24
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 2,
+    "fields": {
+      "nombre": "Set de destornilladores 6 piezas",
+      "categoria": "Herramientas manuales",
+      "precio": 7490,
+      "stock": 32
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 3,
+    "fields": {
+      "nombre": "Alicate universal 8 pulgadas",
+      "categoria": "Herramientas manuales",
+      "precio": 5990,
+      "stock": 18
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 4,
+    "fields": {
+      "nombre": "Llave ajustable 10 pulgadas",
+      "categoria": "Herramientas manuales",
+      "precio": 10990,
+      "stock": 14
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 5,
+    "fields": {
+      "nombre": "Cinta métrica 5 metros",
+      "categoria": "Herramientas manuales",
+      "precio": 3990,
+      "stock": 40
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 6,
+    "fields": {
+      "nombre": "Serrucho carpintero 20 pulgadas",
+      "categoria": "Herramientas manuales",
+      "precio": 8990,
+      "stock": 11
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 7,
+    "fields": {
+      "nombre": "Nivel de aluminio 60 cm",
+      "categoria": "Herramientas manuales",
+      "precio": 12990,
+      "stock": 9
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 8,
+    "fields": {
+      "nombre": "Formón para madera 25 mm",
+      "categoria": "Herramientas manuales",
+      "precio": 4990,
+      "stock": 16
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 9,
+    "fields": {
+      "nombre": "Taladro percutor 650 W",
+      "categoria": "Herramientas eléctricas",
+      "precio": 49990,
+      "stock": 8
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 10,
+    "fields": {
+      "nombre": "Esmeril angular 4 1/2 pulgadas",
+      "categoria": "Herramientas eléctricas",
+      "precio": 32990,
+      "stock": 12
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 11,
+    "fields": {
+      "nombre": "Atornillador inalámbrico 12 V",
+      "categoria": "Herramientas eléctricas",
+      "precio": 59990,
+      "stock": 7
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 12,
+    "fields": {
+      "nombre": "Sierra circular 7 1/4 pulgadas",
+      "categoria": "Herramientas eléctricas",
+      "precio": 79990,
+      "stock": 5
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 13,
+    "fields": {
+      "nombre": "Lijadora orbital 240 W",
+      "categoria": "Herramientas eléctricas",
+      "precio": 27990,
+      "stock": 10
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 14,
+    "fields": {
+      "nombre": "Pistola de silicona eléctrica",
+      "categoria": "Herramientas eléctricas",
+      "precio": 11990,
+      "stock": 13
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 15,
+    "fields": {
+      "nombre": "Broca para concreto 8 mm",
+      "categoria": "Herramientas eléctricas",
+      "precio": 2490,
+      "stock": 27
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 16,
+    "fields": {
+      "nombre": "Set de brocas para madera 8 piezas",
+      "categoria": "Herramientas eléctricas",
+      "precio": 6990,
+      "stock": 21
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 17,
+    "fields": {
+      "nombre": "Tornillo para madera 2 pulgadas, caja 100 unidades",
+      "categoria": "Fijaciones",
+      "precio": 3990,
+      "stock": 35
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 18,
+    "fields": {
+      "nombre": "Clavo corriente 2 pulgadas, kilo",
+      "categoria": "Fijaciones",
+      "precio": 3290,
+      "stock": 28
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 19,
+    "fields": {
+      "nombre": "Tarugo nylon 8 mm, bolsa 50 unidades",
+      "categoria": "Fijaciones",
+      "precio": 2490,
+      "stock": 42
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 20,
+    "fields": {
+      "nombre": "Perno hexagonal galvanizado 3/8 pulgada",
+      "categoria": "Fijaciones",
+      "precio": 1890,
+      "stock": 50
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 21,
+    "fields": {
+      "nombre": "Bisagra zincada 3 pulgadas, par",
+      "categoria": "Fijaciones",
+      "precio": 1990,
+      "stock": 19
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 22,
+    "fields": {
+      "nombre": "Candado de bronce 40 mm",
+      "categoria": "Fijaciones",
+      "precio": 7990,
+      "stock": 15
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 23,
+    "fields": {
+      "nombre": "Pintura látex interior blanco 1 galón",
+      "categoria": "Pinturas",
+      "precio": 21990,
+      "stock": 10
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 24,
+    "fields": {
+      "nombre": "Esmalte al agua azul 1 galón",
+      "categoria": "Pinturas",
+      "precio": 26990,
+      "stock": 6
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 25,
+    "fields": {
+      "nombre": "Brocha profesional 2 pulgadas",
+      "categoria": "Pinturas",
+      "precio": 3490,
+      "stock": 22
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 26,
+    "fields": {
+      "nombre": "Rodillo antigota 18 cm",
+      "categoria": "Pinturas",
+      "precio": 5990,
+      "stock": 17
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 27,
+    "fields": {
+      "nombre": "Lija para madera grano 120, paquete",
+      "categoria": "Pinturas",
+      "precio": 1990,
+      "stock": 30
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 28,
+    "fields": {
+      "nombre": "Cinta aisladora negra 20 metros",
+      "categoria": "Electricidad",
+      "precio": 1490,
+      "stock": 38
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 29,
+    "fields": {
+      "nombre": "Alargador eléctrico 5 metros",
+      "categoria": "Electricidad",
+      "precio": 8990,
+      "stock": 14
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 30,
+    "fields": {
+      "nombre": "Interruptor simple embutido",
+      "categoria": "Electricidad",
+      "precio": 2790,
+      "stock": 25
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 31,
+    "fields": {
+      "nombre": "Ampolleta LED luz cálida 9 W",
+      "categoria": "Electricidad",
+      "precio": 1990,
+      "stock": 31
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 32,
+    "fields": {
+      "nombre": "Guantes de cabritilla reforzados",
+      "categoria": "Seguridad",
+      "precio": 6990,
+      "stock": 20
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 33,
+    "fields": {
+      "nombre": "Lentes de seguridad transparentes",
+      "categoria": "Seguridad",
+      "precio": 2990,
+      "stock": 26
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 34,
+    "fields": {
+      "nombre": "Casco de seguridad blanco",
+      "categoria": "Seguridad",
+      "precio": 11990,
+      "stock": 9
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 35,
+    "fields": {
+      "nombre": "Mascarilla respiratoria con filtro",
+      "categoria": "Seguridad",
+      "precio": 8990,
+      "stock": 0
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 36,
+    "fields": {
+      "nombre": "Cemento corriente 25 kg",
+      "categoria": "Construcción",
+      "precio": 4990,
+      "stock": 33
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 37,
+    "fields": {
+      "nombre": "Plancha yeso cartón 10 mm",
+      "categoria": "Construcción",
+      "precio": 8990,
+      "stock": 12
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 38,
+    "fields": {
+      "nombre": "Manguera jardín reforzada 15 metros",
+      "categoria": "Jardín",
+      "precio": 14990,
+      "stock": 8
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 39,
+    "fields": {
+      "nombre": "Pala jardín mango de madera",
+      "categoria": "Jardín",
+      "precio": 9990,
+      "stock": 13
+    }
+  },
+  {
+    "model": "catalogo.producto",
+    "pk": 40,
+    "fields": {
+      "nombre": "Tijera de podar 8 pulgadas",
+      "categoria": "Jardín",
+      "precio": 6990,
+      "stock": 16
+    }
+  }
+]
