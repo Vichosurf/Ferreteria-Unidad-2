@@ -60,6 +60,12 @@ Verifiqué con una prueba y una solicitud a la portada que los productos se mues
 Implementé el alta, edición y eliminación con confirmación desde las páginas del catálogo.
 Las vistas guardan los cambios en la base de datos y redirigen al listado principal.
 
+### 8. Formulario de clientes, sesiones y seguridad
+
+- **Prompt:** “Implementa el modelo y formulario `ConsultaCliente` con nombre, correo, mensaje, producto opcional y fecha automática. Agrega validaciones, confirmación, CSRF y una funcionalidad de sesión para recordar los últimos tres productos visitados.”
+- **Resumen de la respuesta:** Se añadieron los campos y validaciones del modelo, el formulario ModelForm, la migración, la administración de consultas y el historial de productos visitados en sesión.
+- **Qué usé o modifiqué antes de integrarlo:** Conservé el usuario autenticado como relación opcional para mantener el historial existente, pero guardé también nombre y correo explícitos. Verifiqué datos inválidos, CSRF, persistencia de la consulta y el límite de tres productos en la sesión.
+
 ### 7. Reportes con ORM
 
 - **Prompt:** “Crea dos reportes Django para el catálogo: un resumen agrupado por categoría con cantidad, precio promedio y stock total; y un listado de productos con stock crítico filtrado y ordenado con el ORM. Agrega templates y enlaces de navegación.”

@@ -96,6 +96,84 @@ class CatalogoTests(TestCase):
             404,
         )
 
+    def test_detalle_guarda_los_ultimos_tres_productos_en_sesion(self):
+        productos = [self.producto]
+        for numero in range(2, 5):
+            productos.append(Producto.objects.create(
+                nombre=f'Producto visitado {numero}',
+                categoria='Electricidad',
+                precio=3000 + numero,
+                stock=numero,
+            ))
+
+        for producto in productos:
+            self.client.get(reverse('detalle_producto', args=[producto.pk]))
+
+        respuesta = self.client.get(
+            reverse('detalle_producto', args=[productos[0].pk]),
+        )
+        self.assertEqual(
+            respuesta.wsgi_request.session['productos_visitados'],
+            [str(productos[0].pk), str(productos[3].pk), str(productos[2].pk)],
+        )
+        self.assertContains(respuesta, 'Últimos productos visitados')
+
+    def test_formulario_consulta_rechaza_correo_y_mensaje_invalidos(self):
+        usuario = get_user_model().objects.create_user(
+            username='cliente_validacion',
+            email='cliente@example.com',
+            password='clave-temporal-de-prueba',
+        )
+        self.client.force_login(usuario)
+        respuesta = self.client.post(reverse('consulta'), {
+            'nombre': 'A',
+            'correo': 'correo-no-valido',
+            'producto': self.producto.pk,
+            'mensaje': 'corto',
+        })
+
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertTrue(respuesta.context['form'].errors['correo'])
+        self.assertContains(respuesta, 'al menos 10 caracteres')
+        self.assertEqual(ConsultaCliente.objects.count(), 0)
+
+    def test_formulario_consulta_guarda_nombre_correo_y_producto(self):
+        usuario = get_user_model().objects.create_user(
+            username='cliente_consulta',
+            email='cuenta@example.com',
+            password='clave-temporal-de-prueba',
+        )
+        self.client.force_login(usuario)
+        respuesta = self.client.post(reverse('consulta'), {
+            'nombre': 'Cliente de prueba',
+            'correo': 'contacto@example.com',
+            'producto': self.producto.pk,
+            'mensaje': '¿Tienen despacho disponible?',
+        })
+
+        self.assertRedirects(respuesta, reverse('consulta_enviada'))
+        consulta = ConsultaCliente.objects.get()
+        self.assertEqual(consulta.nombre, 'Cliente de prueba')
+        self.assertEqual(consulta.correo, 'contacto@example.com')
+        self.assertEqual(consulta.producto, self.producto)
+        self.assertEqual(consulta.usuario, usuario)
+
+    def test_formulario_consulta_requiere_csrf(self):
+        usuario = get_user_model().objects.create_user(
+            username='cliente_csrf',
+            password='clave-temporal-de-prueba',
+        )
+        cliente = self.client_class(enforce_csrf_checks=True)
+        cliente.force_login(usuario)
+        respuesta = cliente.post(reverse('consulta'), {
+            'nombre': 'Cliente CSRF',
+            'correo': 'csrf@example.com',
+            'mensaje': 'Mensaje válido para la consulta.',
+        })
+
+        self.assertEqual(respuesta.status_code, 403)
+        self.assertEqual(ConsultaCliente.objects.count(), 0)
+
     def test_reporte_resumen_agrupa_y_calcula_con_orm(self):
         Producto.objects.create(
             nombre='Alicate adicional',

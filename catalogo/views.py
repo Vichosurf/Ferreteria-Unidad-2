@@ -81,10 +81,26 @@ def reporte_stock_critico(request):
 
 def detalle_producto(request, producto_id):
     producto = get_object_or_404(Producto, pk=producto_id)
+    visitados = request.session.get('productos_visitados', [])
+    visitados = [str(pk) for pk in visitados if str(pk) != str(producto.pk)]
+    visitados.insert(0, str(producto.pk))
+    visitados = visitados[:3]
+    request.session['productos_visitados'] = visitados
+    productos_visitados = list(
+        Producto.objects.filter(pk__in=visitados)
+    )
+    productos_por_id = {str(item.pk): item for item in productos_visitados}
     return render(
         request,
         'catalogo/detalle_producto.html',
-        {'producto': producto},
+        {
+            'producto': producto,
+            'productos_visitados': [
+                productos_por_id[pk]
+                for pk in visitados
+                if pk in productos_por_id
+            ],
+        },
     )
 
 
@@ -211,8 +227,27 @@ class CrearConsultaView(LoginRequiredMixin, CreateView):
     template_name = 'catalogo/consulta.html'
     success_url = reverse_lazy('consulta_enviada')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if self.request.method == 'POST' and self.request.user.is_authenticated:
+            data = self.request.POST.copy()
+            data.setdefault(
+                'nombre',
+                self.request.user.get_full_name() or self.request.user.username,
+            )
+            data.setdefault(
+                'correo',
+                self.request.user.email or (
+                    f'{self.request.user.username}@ejemplo.com'
+                ),
+            )
+            kwargs['data'] = data
+        return kwargs
+
     def get_initial(self):
         initial = super().get_initial()
+        initial['nombre'] = self.request.user.get_full_name() or self.request.user.username
+        initial['correo'] = self.request.user.email
         producto_id = self.request.GET.get('producto', '')
         if producto_id.isdigit():
             initial['producto'] = int(producto_id)
