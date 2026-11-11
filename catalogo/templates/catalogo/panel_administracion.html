@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Administración | Ferretería Vega</title>
+    <link rel="stylesheet" href="{% static 'catalogo/css/panel_administracion.css' %}">
+</head>
+<body>
+    <header class="panel-encabezado">
+        <a class="volver" href="{% url 'inicio' %}" aria-label="Volver a la página de Ferretería Vega" title="Volver a Ferretería Vega">
+            <span aria-hidden="true">&larr;</span>
+        </a>
+    </header>
+
+    <main>
+        <p class="etiqueta">FERRETERÍA VEGA</p>
+        <h1>Panel de administración</h1>
+        <p class="introduccion">Gestiona el catálogo y publica avisos para quienes visitan la tienda.</p>
+
+        {% if messages %}
+        <div class="mensajes" role="status">
+            {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+        </div>
+        {% endif %}
+
+        <section class="seccion" aria-labelledby="productos-titulo">
+            <div class="seccion-encabezado">
+                <div>
+                    <h2 id="productos-titulo">Productos</h2>
+                    <p>{{ productos|length }} productos en el catálogo</p>
+                </div>
+                <a class="boton boton-principal" href="{% url 'producto_crear' %}">Agregar producto</a>
+            </div>
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Categoría</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Stock</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                        <tr>
+                            <th scope="row">{{ producto.nombre }}</th>
+                            <td>{{ producto.get_categoria_display }}</td>
+                            <td>${{ producto.precio }} CLP</td>
+                            <td>{{ producto.stock }}</td>
+                            <td class="acciones">
+                                <a href="{% url 'producto_editar' producto.pk %}">Editar</a>
+                                <a href="{% url 'producto_eliminar' producto.pk %}">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="5">No hay productos en el catálogo.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="seccion" aria-labelledby="restaurar-titulo">
+            <h2 id="restaurar-titulo">Recuperar productos del catálogo</h2>
+            <p>Vuelve a agregar los productos de los archivos originales que ya no estén en el catálogo. Los productos existentes no se modifican.</p>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="restaurar_catalogo">
+                <button class="boton" type="submit">Recuperar productos faltantes</button>
+            </form>
+        </section>
+
+        <section class="seccion" aria-labelledby="aviso-titulo">
+            <h2 id="aviso-titulo">Aviso para todos los visitantes</h2>
+            <p>El aviso publicado se muestra en la tienda a clientes y visitantes, incluso si no han iniciado sesión. No se envía por correo electrónico.</p>
+            {% if aviso_global %}
+            <div class="aviso-activo">
+                <strong>Aviso publicado: {{ aviso_global.titulo }}</strong>
+                <p>{{ aviso_global.mensaje }}</p>
+            </div>
+            {% endif %}
+            <form method="post" class="form-aviso">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="publicar_aviso">
+                {{ aviso_form.as_p }}
+                <button class="boton boton-principal" type="submit">Publicar aviso</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

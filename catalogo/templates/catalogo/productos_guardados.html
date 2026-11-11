@@ -1,0 +1,39 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Productos guardados | Ferretería Vega{% endblock %}
+
+{% block content %}
+<section class="catalogo-hero">
+    <div>
+        <p class="texto-etiqueta">MI CUENTA</p>
+        <h2>Productos guardados</h2>
+        <p>Guarda productos para encontrarlos fácilmente en tu próxima compra.</p>
+    </div>
+</section>
+
+<div class="productos-grid">
+    {% for guardado in guardados %}
+    <article class="producto-card">
+        <a class="producto-imagen-enlace" href="{% url 'detalle_producto' guardado.producto.id %}">
+            {% include 'catalogo/partials/imagen_producto.html' with producto=guardado.producto %}
+        </a>
+        <div class="producto-card-contenido">
+            <p class="producto-categoria">{{ guardado.producto.get_categoria_display }}</p>
+            <h3><a href="{% url 'detalle_producto' guardado.producto.id %}">{{ guardado.producto.nombre }}</a></h3>
+            <p class="producto-precio">${{ guardado.producto.precio }} <span>CLP</span></p>
+            <p class="producto-stock">{{ guardado.producto.stock }} disponibles</p>
+            <form method="post" action="{% url 'producto_guardado_quitar' guardado.producto.id %}">
+                {% csrf_token %}
+                <button class="boton" type="submit">Quitar de guardados</button>
+            </form>
+        </div>
+    </article>
+    {% empty %}
+    <div class="carrito-vacio">
+        <h3>Aún no tienes productos guardados</h3>
+        <p>Presiona el ícono de guardado en cualquier producto para verlo aquí.</p>
+        <a class="boton boton-principal" href="{% url 'catalogo' %}">Explorar productos</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

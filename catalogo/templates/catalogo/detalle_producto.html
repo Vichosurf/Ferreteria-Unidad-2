@@ -1,6 +1,6 @@
 {% extends 'catalogo/base.html' %}
 
-{% block title %}{{ producto.nombre }} | Ferretería{% endblock %}
+{% block title %}{{ producto.nombre }} | Ferretería Vega{% endblock %}
 
 {% block content %}
 <p><a href="{% url 'catalogo' %}">← Volver al catálogo</a></p>
@@ -20,13 +20,19 @@
             {% endif %}
         </p>
         {% if user.is_authenticated %}
+        <form method="post" action="{% if producto_guardado %}{% url 'producto_guardado_quitar' producto.id %}{% else %}{% url 'producto_guardar' producto.id %}{% endif %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{% url 'detalle_producto' producto.id %}">
+            <button class="boton" type="submit">{% if producto_guardado %}Quitar de guardados{% else %}Guardar para próxima compra{% endif %}</button>
+        </form>
         <a class="boton boton-principal" href="{% url 'consulta' %}?producto={{ producto.id }}">Consultar por este producto</a>
             {% if producto.stock > 0 %}
-        <form class="form-compra" method="post" action="{% url 'comprar_producto' producto.id %}">
+        <form class="form-compra" method="post" action="{% url 'carrito_agregar' producto.id %}">
             {% csrf_token %}
+            <input type="hidden" name="next" value="{% url 'detalle_producto' producto.id %}">
             <label for="cantidad-detalle">Cantidad</label>
             <input id="cantidad-detalle" type="number" name="cantidad" value="1" min="1" max="{{ producto.stock }}" required>
-            <button class="boton boton-compra" type="submit">Comprar (demostración)</button>
+            <button class="boton boton-compra" type="submit">Agregar al carro</button>
         </form>
             {% endif %}
         {% else %}

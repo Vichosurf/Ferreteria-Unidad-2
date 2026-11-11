@@ -1,0 +1,45 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Historial | Ferretería Vega{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <section class="perfil-cuenta" aria-label="Perfil del usuario">
+        <p class="texto-etiqueta">PERFIL</p>
+        <h2>{{ user.get_full_name|default:user.username }}</h2>
+    </section>
+    <div class="cuenta-opciones" aria-label="Opciones de mi cuenta">
+        <a class="boton boton-principal" href="#mi-historial">Mi historial</a>
+        <a class="boton" href="{% url 'productos_guardados' %}">Productos guardados</a>
+        <a class="boton" href="{% url 'configuracion' %}">Configuración</a>
+        <form method="post" action="{% url 'cerrar_sesion' %}">
+            {% csrf_token %}
+            <button class="boton" type="submit">Cerrar sesión</button>
+        </form>
+    </div>
+    <section class="seccion-historial" id="mi-historial">
+        <h3>Compras de demostración</h3>
+        <div class="historial-grid">
+            {% for compra in compras %}
+            <article class="compra-card">
+                <h4>{{ compra.nombre_producto }}</h4>
+                <p><strong>Cantidad:</strong> {{ compra.cantidad }} unidad(es)</p>
+                <p><strong>Precio unitario:</strong> ${{ compra.precio_unitario }} CLP</p>
+                <p><strong>Fecha:</strong> {{ compra.creada_en|date:"d/m/Y H:i" }}</p>
+                <p class="compra-total">Total: ${{ compra.total }} CLP</p>
+            </article>
+            {% empty %}
+            <p>Aún no tienes compras registradas.</p>
+            {% endfor %}
+        </div>
+    </section>
+    <section class="seccion-historial">
+        <h3>Consultas enviadas</h3>
+        {% for consulta in consultas %}
+            <p>{{ consulta.producto|default:"Consulta general" }} · {{ consulta.creada_en|date:"d/m/Y H:i" }}<br>{{ consulta.mensaje }}</p>
+        {% empty %}
+            <p>Aún no has enviado consultas.</p>
+        {% endfor %}
+    </section>
+</section>
+{% endblock %}

@@ -19,11 +19,26 @@ from django.urls import path
 from catalogo import views
 
 urlpatterns = [
+    path(
+        'admin/',
+        views.panel_administracion,
+        name='panel_administracion',
+    ),
     path('admin/', admin.site.urls),
     path(
         'productos/<int:producto_id>/',
         views.detalle_producto,
         name='detalle_producto',
+    ),
+    path(
+        'productos/<int:producto_id>/guardar/',
+        views.guardar_producto,
+        name='producto_guardar',
+    ),
+    path(
+        'productos/<int:producto_id>/guardar/quitar/',
+        views.quitar_producto_guardado,
+        name='producto_guardado_quitar',
     ),
     path(
         'productos/nuevo/',
@@ -42,6 +57,21 @@ urlpatterns = [
     ),
     path('', views.inicio, name='inicio'),
     path('comprar/', views.catalogo, name='catalogo'),
+    path('carrito/', views.carrito, name='carrito'),
+    path(
+        'carrito/agregar/<int:producto_id>/',
+        views.agregar_al_carrito,
+        name='carrito_agregar',
+    ),
+    path('carrito/actualizar/', views.actualizar_carrito, name='carrito_actualizar'),
+    path(
+        'carrito/quitar/<int:producto_id>/',
+        views.eliminar_del_carrito,
+        name='carrito_eliminar',
+    ),
+    path('carrito/pagar/', views.pagar_carrito, name='carrito_pagar'),
+    path('ayuda/', views.ayuda, name='ayuda'),
+    path('terminos-y-condiciones/', views.terminos, name='terminos'),
     path(
         'reportes/resumen-categorias/',
         views.reporte_resumen_categorias,
@@ -75,6 +105,11 @@ urlpatterns = [
         name='consulta_enviada',
     ),
     path('mi-cuenta/historial/', views.historial, name='historial'),
+    path(
+        'mi-cuenta/productos-guardados/',
+        views.productos_guardados,
+        name='productos_guardados',
+    ),
     path(
         'mi-cuenta/notificaciones/',
         views.notificaciones,

@@ -1,0 +1,21 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Ayuda | Ferretería Vega{% endblock %}
+
+{% block content %}
+<section class="panel info-page">
+    <p class="texto-etiqueta">CENTRO DE AYUDA</p>
+    <h2>Preguntas frecuentes</h2>
+    <p>Somos una ferretería local con un catálogo online de herramientas, materiales y artículos de seguridad para tus proyectos.</p>
+    <h3>¿Cómo busco un producto?</h3>
+    <p>Usa el buscador por nombre o selecciona una categoría en la página de productos.</p>
+    <h3>¿Cómo agrego un producto al carro?</h3>
+    <p>Elige la cantidad y presiona “Agregar al carro”. El stock se reserva mientras el producto permanece en tu carro.</p>
+    <h3>¿Qué ocurre si quito un producto?</h3>
+    <p>La cantidad retirada se devuelve automáticamente al stock disponible.</p>
+    <h3>¿El pago es real?</h3>
+    <p>No. Esta plataforma es una demostración académica: no solicita datos bancarios ni realiza cobros reales.</p>
+    <h3>¿Necesitas más ayuda?</h3>
+    <p><a href="{% url 'consulta' %}">Contáctanos mediante el formulario</a> y cuéntanos tu consulta.</p>
+</section>
+{% endblock %}

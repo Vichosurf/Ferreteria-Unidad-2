@@ -1,0 +1,250 @@
+:root {
+    color: #202a35;
+    background: #f3f5f7;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+.panel-encabezado {
+    min-height: 64px;
+    padding: .8rem max(1.25rem, calc((100% - 1120px) / 2));
+    background: #183b56;
+}
+
+.volver {
+    display: inline-flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: .55rem;
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.volver span:first-child {
+    font-size: 1.65rem;
+    line-height: 1;
+}
+
+.volver:hover,
+.volver:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: .2em;
+}
+
+main {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 2rem auto 4rem;
+}
+
+.etiqueta {
+    margin: 0 0 .35rem;
+    color: #a64e20;
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: .13em;
+}
+
+h1 {
+    margin: 0;
+    color: #183b56;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+}
+
+.introduccion {
+    margin: .55rem 0 2rem;
+    color: #526170;
+}
+
+.seccion {
+    margin-top: 2rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid #d5dee5;
+}
+
+.seccion h2 {
+    margin: 0;
+    color: #183b56;
+    font-size: 1.35rem;
+}
+
+.seccion > p,
+.seccion-encabezado p {
+    color: #526170;
+    line-height: 1.55;
+}
+
+.seccion-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.seccion-encabezado p {
+    margin: .3rem 0 0;
+    font-size: .9rem;
+}
+
+.tabla-contenedor {
+    overflow-x: auto;
+    border-top: 2px solid #183b56;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    text-align: left;
+}
+
+th,
+td {
+    padding: .8rem .75rem;
+    border-bottom: 1px solid #e1e6eb;
+    vertical-align: middle;
+}
+
+thead th {
+    color: #526170;
+    font-size: .78rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+tbody th {
+    font-weight: 650;
+}
+
+.acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .8rem;
+    white-space: nowrap;
+}
+
+.acciones a {
+    color: #135b83;
+    font-weight: 650;
+}
+
+.boton {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: .6rem .95rem;
+    border: 1px solid #cbd6de;
+    border-radius: .4rem;
+    background: #fff;
+    color: #183b56;
+    font: inherit;
+    font-weight: 650;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton:hover,
+.boton:focus-visible {
+    border-color: #183b56;
+}
+
+.boton-principal {
+    border-color: #d96827;
+    background: #d96827;
+    color: #fff;
+}
+
+.boton-principal:hover,
+.boton-principal:focus-visible {
+    border-color: #a64e20;
+    background: #a64e20;
+}
+
+.form-aviso {
+    max-width: 700px;
+}
+
+.form-aviso p {
+    display: grid;
+    gap: .4rem;
+    margin: 1rem 0;
+}
+
+.form-aviso label {
+    color: #34495a;
+    font-weight: 650;
+}
+
+.form-aviso input,
+.form-aviso textarea {
+    width: 100%;
+    padding: .7rem;
+    border: 1px solid #aab6c0;
+    border-radius: .35rem;
+    font: inherit;
+}
+
+.form-aviso textarea {
+    resize: vertical;
+}
+
+.form-aviso .helptext {
+    color: #607284;
+    font-size: .82rem;
+}
+
+.aviso-activo {
+    margin: 1rem 0;
+    padding: .8rem 0;
+    border-top: 1px solid #e1e6eb;
+    border-bottom: 1px solid #e1e6eb;
+    color: #34495a;
+}
+
+.aviso-activo p {
+    margin: .35rem 0 0;
+}
+
+.mensajes {
+    padding: .8rem 1rem;
+    border-left: 4px solid #26734d;
+    background: #e8f4ec;
+    color: #205b3b;
+}
+
+.mensajes p {
+    margin: 0;
+}
+
+.errorlist {
+    color: #9b1c1c;
+}
+
+@media (max-width: 680px) {
+    main {
+        width: min(100% - 1.25rem, 1120px);
+        margin-top: 1.35rem;
+    }
+
+    .seccion-encabezado {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    th,
+    td {
+        padding: .65rem .55rem;
+    }
+}

@@ -61,6 +61,36 @@ class Producto(models.Model):
         return self.nombre
 
 
+class ProductoGuardado(models.Model):
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='productos_guardados',
+        verbose_name='cliente',
+    )
+    producto = models.ForeignKey(
+        Producto,
+        on_delete=models.CASCADE,
+        related_name='guardados',
+        verbose_name='producto',
+    )
+    creado_en = models.DateTimeField('fecha de guardado', auto_now_add=True)
+
+    class Meta:
+        ordering = ['-creado_en']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['usuario', 'producto'],
+                name='producto_guardado_unico_por_usuario',
+            ),
+        ]
+        verbose_name = 'producto guardado'
+        verbose_name_plural = 'productos guardados'
+
+    def __str__(self):
+        return f'{self.usuario}: {self.producto}'
+
+
 class ConsultaCliente(models.Model):
     nombre = models.CharField(
         'nombre',
@@ -148,3 +178,21 @@ class AvisoCliente(models.Model):
 
     def __str__(self):
         return f'{self.usuario}: {self.mensaje}'
+
+
+class AvisoGlobal(models.Model):
+    titulo = models.CharField('título', max_length=100)
+    mensaje = models.CharField('mensaje', max_length=500)
+    activo = models.BooleanField(
+        'publicado para todos los visitantes',
+        default=True,
+    )
+    creado_en = models.DateTimeField('fecha de creación', auto_now_add=True)
+
+    class Meta:
+        ordering = ['-creado_en']
+        verbose_name = 'aviso para todos'
+        verbose_name_plural = 'avisos para todos'
+
+    def __str__(self):
+        return self.titulo

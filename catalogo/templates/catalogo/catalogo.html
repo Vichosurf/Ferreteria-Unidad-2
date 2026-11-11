@@ -1,16 +1,16 @@
 {% extends 'catalogo/base.html' %}
 
-{% block title %}Catálogo | Ferretería{% endblock %}
+{% block title %}Catálogo | Ferretería Vega{% endblock %}
 
 {% block content %}
 <section class="catalogo-hero">
     <div>
-        <p class="texto-etiqueta">CATÁLOGO DE FERRETERÍA</p>
-        <h2>Todo lo que tu proyecto necesita</h2>
+        <p class="texto-etiqueta">CATÁLOGO DE FERRETERÍA VEGA</p>
+        <h2>Todo Material que necesitas para tu hogar</h2>
         <p>Encuentra herramientas, materiales y soluciones para tus próximos proyectos.</p>
     </div>
     {% if user.is_staff %}
-    <a class="boton boton-principal" href="{% url 'producto_crear' %}">Agregar producto</a>
+    <a class="boton boton-principal" href="{% url 'producto_crear' %}">Agregar unidades</a>
     {% endif %}
 </section>
 
@@ -69,12 +69,18 @@
                 {% if producto.stock > 0 %}{{ producto.stock }} disponibles{% else %}Sin stock{% endif %}
             </p>
             {% if user.is_authenticated %}
-                {% if producto.stock > 0 %}
-                <form class="form-compra tarjeta-form-compra" method="post" action="{% url 'comprar_producto' producto.id %}">
+                <form method="post" action="{% if producto.id in productos_guardados_ids %}{% url 'producto_guardado_quitar' producto.id %}{% else %}{% url 'producto_guardar' producto.id %}{% endif %}">
                     {% csrf_token %}
+                    <input type="hidden" name="next" value="{% url 'catalogo' %}#producto-{{ producto.id }}">
+                    <button class="boton" type="submit">{% if producto.id in productos_guardados_ids %}Quitar de guardados{% else %}Guardar producto{% endif %}</button>
+                </form>
+                {% if producto.stock > 0 %}
+                <form class="form-compra tarjeta-form-compra" method="post" action="{% url 'carrito_agregar' producto.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{% url 'catalogo' %}#producto-{{ producto.id }}">
                     <label for="cantidad-{{ producto.id }}">Cantidad</label>
                     <input id="cantidad-{{ producto.id }}" type="number" name="cantidad" value="1" min="1" max="{{ producto.stock }}" required>
-                    <button class="boton boton-compra" type="submit">Comprar</button>
+                    <button class="boton boton-compra" type="submit">Agregar al carro</button>
                 </form>
                 {% else %}
                 <button class="boton boton-deshabilitado" type="button" disabled>Sin stock</button>

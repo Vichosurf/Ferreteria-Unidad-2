@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import ConsultaCliente, Producto
+from .models import AvisoGlobal, ConsultaCliente, Producto
 
 
 class RegistroClienteForm(UserCreationForm):
@@ -46,3 +46,12 @@ class ProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
         fields = ('nombre', 'categoria', 'precio', 'stock')
+
+
+class AvisoGlobalForm(forms.ModelForm):
+    class Meta:
+        model = AvisoGlobal
+        fields = ('titulo', 'mensaje')
+        widgets = {
+            'mensaje': forms.Textarea(attrs={'rows': 4}),
+        }

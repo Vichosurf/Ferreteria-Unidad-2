@@ -66,12 +66,16 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'catalogo.context_processors.configuracion_sitio',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
+LOGIN_URL = 'iniciar_sesion'
+LOGIN_REDIRECT_URL = 'inicio'
 
 
 # Database

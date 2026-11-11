@@ -1,73 +1,54 @@
-# Registro de uso de IA
+# Documento de uso de IA
 
-## Parte 1: Consultas, respuestas y ajustes
+## Parte 1: Registro de consultas
 
+### 1. Carro de compras
 
+- **Prompt:** “Agregue un carro de supermercado en el navbar para crear una lista de productos, mostrar el detalle del carro y habilitar el botón Pagar cuando la lista esté lista.”
+- **Resumen de la respuesta:** Se creó un carro basado en sesión con agregar, actualizar, quitar, total y pago de demostración. También se agregó el ícono del carro al navbar.
+- **Uso y adaptación:** Cambié el flujo para que el catálogo agregara productos al carro en vez de comprar inmediatamente. Conservé la compra directa anterior para no romper funcionalidades existentes y agregué pruebas del nuevo flujo.
 
-### 1. Fixture de productos
+### 2. Reserva y devolución de stock
 
-- **Prompt de poblamiento indicado en la pauta:** “Genera una fixture JSON de Django para el modelo `catalogo.Producto` con 40 productos de ferretería chilenos realistas. Campos: nombre, categoria, precio (int, 1000 a 150000), stock (int, 0 a 50). Formato: lista de objetos con model, pk y fields, lista para cargar con loaddata.”
-- **Resumen de la respuesta:** Se prepararon 40 registros en formato de fixture de Django, con nombres y categorías de ferretería.
-- **Ajustes y comprobación:** Se corrigió el precio del perno hexagonal a $1.890 para que respete el mínimo de $1.000 validado por el modelo. Se comprobó la cantidad, los rangos de precio y stock y la carga mediante `loaddata` en una base temporal y luego en la base local.
+- **Prompt:** “Cuando agregue una unidad al carro debe restarse del stock y, si quito el producto o reduzco la cantidad, debe volver al stock original.”
+- **Resumen de la respuesta:** La reserva se descuenta al agregar, se devuelve al quitar o reducir y el pago no vuelve a descontar las unidades.
+- **Uso y adaptación:** Revisé una primera condición de stock que podía contar dos veces las unidades ya reservadas y la corregí para comparar solo contra el stock restante. Agregué transacciones y pruebas para agregar, quitar, pagar y devolver stock.
 
-### 2. Django Admin
+### 3. Tema visual para administradores
 
-- **Prompt:** “Configura Django Admin para gestionar el modelo `Producto`, mostrando al menos tres campos y habilitando búsqueda o filtros.”
-- **Resumen de la respuesta:** Se registró `Producto` en el administrador con columnas para nombre, categoría, precio y stock, además de búsqueda y filtro por categoría.
-- **Qué usé o modifiqué antes de integrarlo:** Integré la configuración en `catalogo/admin.py` y comprobé el acceso al administrador y las acciones de crear, editar, buscar y eliminar productos con una base de datos temporal.
+- **Prompt:** “Cuando inicie sesión como administrador, cambie el fondo a cyan y use azul oscuro en footer, navbar y botones, mezclado con morado oscuro.”
+- **Resumen de la respuesta:** Se agregó una clase visual para usuarios administradores con fondo cyan, navbar y footer en degradado azul oscuro–morado, y botones con la misma combinación.
+- **Uso y adaptación:** Apliqué el tema únicamente cuando `user.is_staff` está autenticado y verifiqué en las pruebas que la plantilla incluya la clase `tema-administrador`.
 
-### 3. Conexión de base de datos
+### 4. Reemplazo del logo
 
-- **Prompt:** “Configura la conexión de este proyecto Django a SQLite y comprueba que pueda guardar y consultar productos.”
-- **Resumen de la respuesta:** Se revisó la configuración de la base de datos de Django y se comprobó el acceso al modelo mediante el ORM.
-- **Qué usé o modifiqué antes de integrarlo:** Mantuve SQLite como base de datos en `config/settings.py`. Probé las migraciones y la creación y lectura de un producto con una base temporal para no depender de los datos locales.
+- **Prompt:** “Reemplace la imagen naranja con la letra F por la imagen proporcionada y use un fondo celeste.”
+- **Resumen de la respuesta:** Se agregó la imagen del logo a los archivos estáticos y se reemplazó la F del navbar y del footer.
+- **Uso y adaptación:** Ajusté el tamaño, el recorte y el fondo celeste con CSS para que el logo se vea correctamente en ambas ubicaciones. No cambié el contenido de los productos ni la estructura de la navegación.
 
-### 4. Configuración del proyecto
+### 5. Productos guardados, notificaciones e historial
 
-- **Prompt:** “Configura Django para que la aplicación de catálogo y sus páginas funcionen con el idioma y la zona horaria de Chile.”
-- **Resumen de la respuesta:** Se revisaron los ajustes del proyecto relacionados con la aplicación, el idioma, la hora local y las páginas disponibles.
-- **Qué usé o modifiqué antes de integrarlo:** La aplicación quedó incluida en `INSTALLED_APPS`, el idioma se configuró como `es-cl` y la zona horaria como `America/Santiago` en `config/settings.py`. También verifiqué las rutas y páginas integradas con las comprobaciones y pruebas del proyecto.
+- **Prompt:** “Agregue productos guardados en el navbar, cambie avisos por notificaciones con un ícono, deje avisos en el footer y muestre el historial de compras como tarjetas.”
+- **Resumen de la respuesta:** Se agregó el guardado de productos por usuario, una vista para consultarlos y quitarlos, el acceso visual a notificaciones, avisos en el footer y tarjetas para cada compra del historial.
+- **Uso y adaptación:** Revisé el modelo existente de avisos, agregué el modelo `ProductoGuardado` con restricción para evitar duplicados, incorporé migración y probé los flujos de guardar, quitar, notificar y mostrar compras.
 
-### 5. Preparación del entorno de la etapa 0
+## Parte 2: Explicación personal del proceso
 
-- **Prompt:** “Instala dependencias, migra y carga el poblamiento; verifica que el listado se muestra desde la BD.”
-- **Resumen de la respuesta:** Se instalaron las dependencias de `requirements.txt`, se comprobaron las migraciones, se cargaron los 40 productos de la fixture y se verificó la portada mediante una prueba y una solicitud HTTP.
-- **Qué usé o modifiqué antes de integrarlo:** Usé el entorno virtual existente. La fixture quedó cargada en la base local; había además un producto previo, por lo que la consulta ORM devolvió 41 productos. La portada respondió HTTP 200 y mostró los 41 productos de la base de datos. La prueba `test_portada_muestra_productos_de_la_base_de_datos` pasó.
-
-### 6. CRUD web del catálogo
-
-- **Prompt:** “Implemente las operaciones desde el sitio: crear con formulario, editar y eliminar con confirmación; tras cada operación redirija al listado principal.”
-- **Resumen de la respuesta:** Se agregó un formulario basado en el modelo `Producto` y vistas para crear, editar y eliminar, accesibles desde el catálogo.
-- **Qué usé o modifiqué antes de integrarlo:** Restringí la gestión a personal autenticado; añadí confirmación antes de eliminar y un aviso cuando existen compras asociadas que impiden borrar el producto. Las operaciones correctas regresan al listado, donde el cambio se consulta desde la base de datos. Agregué pruebas para el flujo, los permisos y la restricción de borrado.
-
-
-## Parte 2: Explicación del proceso
-
-Primero preparé el proyecto Django para el catálogo de una ferretería.
-Definí el producto con nombre, categoría, precio y stock, y comprobé sus migraciones.
-Configuré SQLite en los ajustes del proyecto para guardar los productos.
-Registré el modelo en Django Admin para poder gestionar el catálogo.
-Dejé visibles el nombre, la categoría, el precio y el stock de cada producto.
-También configuré la búsqueda y el filtro por categoría para encontrar productos.
-Preparé una fixture con 40 productos de ferretería en el formato que acepta Django.
-Revisé los campos, los precios y las cantidades antes de cargar los registros.
-Ajusté el precio del perno hexagonal para respetar el mínimo definido para los productos.
-Cargué la fixture con `loaddata` y comprobé que los productos aparecieran en la base de datos.
-Configuré el idioma del proyecto en español de Chile y la zona horaria de Santiago.
-Finalmente probé el administrador, la carga de datos y la consulta del catálogo desde la aplicación.
-Para la etapa 0 instalé las dependencias, ejecuté las migraciones y cargué la fixture.
-Verifiqué con una prueba y una solicitud a la portada que los productos se muestran desde SQLite.
-Implementé el alta, edición y eliminación con confirmación desde las páginas del catálogo.
-Las vistas guardan los cambios en la base de datos y redirigen al listado principal.
-
-### 8. Formulario de clientes, sesiones y seguridad
-
-- **Prompt:** “Implementa el modelo y formulario `ConsultaCliente` con nombre, correo, mensaje, producto opcional y fecha automática. Agrega validaciones, confirmación, CSRF y una funcionalidad de sesión para recordar los últimos tres productos visitados.”
-- **Resumen de la respuesta:** Se añadieron los campos y validaciones del modelo, el formulario ModelForm, la migración, la administración de consultas y el historial de productos visitados en sesión.
-- **Qué usé o modifiqué antes de integrarlo:** Conservé el usuario autenticado como relación opcional para mantener el historial existente, pero guardé también nombre y correo explícitos. Verifiqué datos inválidos, CSRF, persistencia de la consulta y el límite de tres productos en la sesión.
-
-### 7. Reportes con ORM
-
-- **Prompt:** “Crea dos reportes Django para el catálogo: un resumen agrupado por categoría con cantidad, precio promedio y stock total; y un listado de productos con stock crítico filtrado y ordenado con el ORM. Agrega templates y enlaces de navegación.”
-- **Resumen de la respuesta:** Se implementaron dos vistas con `values`, `annotate`, `Count`, `Avg`, `Sum`, `filter` y `order_by`, además de sus templates y rutas.
-- **Qué usé o modifiqué antes de integrarlo:** Adapté los reportes a los campos existentes de `Producto`. El primer reporte agrupa por categoría y el segundo considera stock crítico de hasta 5 unidades. Agregué pruebas para verificar los cálculos, el filtro y el ordenamiento desde la base de datos.
+Usé la IA como apoyo para avanzar en mi catálogo sin dejar de revisar cada cambio.
+Primero le pedí orientación para organizar la navegación y separar las opciones de clientes y administradores.
+La propuesta inicial me sirvió como base, pero tuve que corregir enlaces y comprobar las rutas en Django.
+También solicité ayuda para asociar las imágenes con el nombre exacto de cada producto.
+Revisé el fixture y confirmé que “Newer Hammer” no correspondía a un registro existente.
+Para el CRUD utilicé la orientación sobre formularios, vistas y confirmación antes de eliminar.
+Después pedí apoyo para construir los reportes usando consultas del ORM.
+La respuesta me ayudó a usar `annotate`, `Count`, `Avg`, `Sum`, `filter` y `order_by` en las vistas.
+Comprobé que los resultados de los reportes coincidieran con los datos guardados en la base de datos.
+Para el carro solicité una solución basada en sesiones y revisé especialmente la reserva de stock.
+Tuve que corregir la lógica para devolver unidades al quitar productos o reducir cantidades.
+También verifiqué que el pago no descontara nuevamente el stock que ya estaba reservado.
+En el formulario de clientes revisé las validaciones, el correo válido, el mensaje mínimo y el token CSRF.
+Los cambios visuales del administrador y el nuevo logo los adapté después de probar las plantillas.
+Las respuestas que funcionaron directamente fueron algunas estructuras de vistas y consultas, pero revisé todas las rutas.
+Aprendí que la IA sirve como guía, pero debo probar, entender el ORM y comprobar que cada función cumpla la pauta.
+En la última mejora pedí una forma de guardar productos y mostrar mejor las notificaciones y el historial.
+La propuesta me sirvió como base, pero adapté el modelo para evitar productos guardados duplicados por usuario.
